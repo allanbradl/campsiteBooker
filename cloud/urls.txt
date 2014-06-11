@@ -1,0 +1,89 @@
+curl --data "locationCriteria=YOSEMITE+NATIONAL+PARK&locationPosition=NRSO%3A2991%3A-119.540833%3A37.839167%3A&interest=camping&currentMaximumWindow=12&lookingFor=&camping_2001_3013=&camping_2001_218=&camping_2002_3013=&camping_2002_218=&camping_2003_3012=&camping_3100_3012=&camping_10001_3012=&camping_3101_3012=&camping_3101_218=&camping_9002_3012=&camping_9002_3013=&camping_9002_218=&camping_9001_3012=&camping_9001_218=&camping_3001_3013=&camping_2004_3013=&camping_2004_3012=&camping_3102_3012=&campingDate=Thu+May+29+2014&campingDateFlex=&lengthOfStay=2&dayuse_9001_3012=&dayuse_9001_218=&dayUseDate=Thu+May+29+2014&dayUseFlex=&dayUseLengthOfStay=2" http://www.recreation.gov/unifSearch.do
+
+http://www.recreation.gov/campsiteCalendar.do?page=calendar&contractCode=NRSO&siteTypeFilter=ALL&submitSiteForm=true&search=site&currentMaximumWindow=12&parkId=70928&campingDate=Sun+Oct+12+2014&lengthOfStay=3
+
+
+# start here
+
+curl -D header.txt \
+	-d 'AemailGroup_1733152645=jessehull%40gmail.com' \
+	-d 'ApasswrdGroup_704558654=flyfly' \
+	-d 'submitForm=submitForm' \
+	-d 'signinFromPurchaseFlow=1' \
+	-d 'sbmtCtrl=combinedFlowSignInKit' \
+	https://www.recreation.gov/memberSignInSignUp.do > postLogin.html
+
+#get cookie from first request. In header.txt
+
+#load twice
+# parkId is the campsite should hard code a couple.
+curl -H "Cookie: JSESSIONID=F0E7F11ACC12AFC877A5812C85F80E13.web08-ny" \
+	-d 'page=calendar' \
+	-d 'contractCode=NRSO' \
+	-d 'siteTypeFilter=ALL' \
+	-d 'submitSiteForm=true' \
+	-d 'search=site' \
+	-d 'currentMaximumWindow=12' \
+	-d 'parkId=70928' \
+	-d 'campingDate=Sun+Oct+12+2014' \
+	-d 'lengthOfStay=3' \
+	 http://www.recreation.gov/campsiteCalendar.do > calendar-bad.html
+
+curl -H "Cookie: JSESSIONID=F0E7F11ACC12AFC877A5812C85F80E13.web08-ny" \
+	-d 'page=calendar' \
+	-d 'contractCode=NRSO' \
+	-d 'siteTypeFilter=ALL' \
+	-d 'submitSiteForm=true' \
+	-d 'search=site' \
+	-d 'currentMaximumWindow=12' \
+	-d 'parkId=70928' \
+	-d 'campingDate=Sun+Oct+12+2014' \
+	-d 'lengthOfStay=3' \
+	 http://www.recreation.gov/campsiteCalendar.do > calendar.html
+
+
+# get siteId from right spot in table.
+
+curl -H "Cookie: JSESSIONID=F0E7F11ACC12AFC877A5812C85F80E13.web08-ny" \
+	-d 'contractCode=NRSO' \
+	-d 'parkId=70928' \
+	-d 'siteId=203312' \
+	 http://www.recreation.gov/camping/Lower_Pines/r/campsiteDetails.do > detail.html
+
+curl -D switchHeader.txt \
+-H "Cookie: JSESSIONID=F0E7F11ACC12AFC877A5812C85F80E13.web08-ny" \
+--data "contractCode=NRSO&parkId=70928&siteId=203312&camparea=82267465&selStatus=aaa&matrixHasError=false&dateToday=10%2F12%2F2014&currentMaximumWindow=12&dateMinWindow=05%2F29%2F2014&dateMaxWindow=05%2F28%2F2015&arvdate=10%2F12%2F2014&arrivaldate=Sun+Oct+12+2014&lengthOfStay=3&dateChosen=true" \
+http://www.recreation.gov/switchBookingAction.do > switch.html
+
+curl \
+-H "Cookie: JSESSIONID=F0E7F11ACC12AFC877A5812C85F80E13.web08-ny" \
+--data "camparea=82267465&currentItemId=1" \
+https://www.recreation.gov/reservationDetails.do > reservationDetails.html
+
+curl \
+-H "Cookie: JSESSIONID=F0E7F11ACC12AFC877A5812C85F80E13.web08-ny" \
+-d 'cartItemId=1&contractCode=NRSO&firstViewFlag=true&equipmentType=108060&vehicleLength=&equipmentDepth=&numberOfCampers=6&numberOfVehicles=2&primaryOccupant=Member&firstName=&lastName=&streetAddressLine1=&city=&stateProvince=&zipCode=&country=&phoneNumber=&emailAddress1=&cpassnum_701=&cpassexpdate_701=&cpasshldname_701=&cpassnum_702=&cpassexpdate_702=&cpasshldname_702=&InteragencyAnnualPassStandardDelivery=0&InteragencyAnnualPassStandardDelivery_fixedPrice=Y&agreementAccepted=true' \
+https://www.recreation.gov/updateShoppingCartItem.do > updateShoppingCartItem.html
+
+
+curl \
+-H "Cookie: JSESSIONID=F0E7F11ACC12AFC877A5812C85F80E13.web08-ny" \
+https://www.recreation.gov/checkoutShoppingCart.do  > checkoutShoppingCart.html
+
+curl \
+-H "Cookie: JSESSIONID=F0E7F11ACC12AFC877A5812C85F80E13.web08-ny" \
+-d 'giftCardNumber=&giftCardSecCode=&giftCardType=&paymentAmountChoice=F&cardType=VISA&swiped=false&swipeData=&cardNumber=1111111111&securityCode=111&expMonth=06&expYear=2016&firstName=Jesse&lastName=Hull&postalCodeNotApplicable=true&postalCodeApplicableFlag=false&postalCode=&postalCodeRequiredCheckbox=false&acknowlegeAccepted=true&voucherNumberHid=&giftCardNumberHid=&redeemContract=&redeemContractIndex=&redeemOperation=' \
+https://www.recreation.gov/processCart.do > processCart.html
+
+
+
+I2014-05-28T22:58:14.202Z] E05C030F330579A169F631D443B1219B.web10-ny
+I2014-05-28T22:58:14.216Z] http://www.recreation.gov/camping/Lower_Pines/r/campsiteDetails.do
+I2014-05-28T22:58:14.228Z] contractCode=NRSO&siteId=203358&parkId=70928
+
+
+
+curl -H "Cookie: JSESSIONID=E05C030F330579A169F631D443B1219B.web10-ny" \
+	--get -d 'contractCode=NRSO&siteId=203358&parkId=70928' \
+	 http://www.recreation.gov/camping/Lower_Pines/r/campsiteDetails.do > detail.html
+

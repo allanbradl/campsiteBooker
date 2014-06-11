@@ -1,0 +1,61 @@
+
+<html>
+  <head>
+    <title>My ParseApp site</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://www.parsecdn.com/js/parse-1.2.18.min.js"></script>
+	<script src="utils.js"></script>
+	<script>
+			Parse.initialize("WTgKoETfuN6XnWUaZjVFADDK7DwPtmxXa4VIpMCP", "S8zdUfhpKy9oml2av2qfSUcc2SC8Tv28Hl63YTnf");
+	</script>
+  </head>
+  <body>
+	  <div id="title">
+	  </div>
+	  <ul id="mainList">
+	  </ul>
+	<script>
+	function showJobResult(jobResult) {
+		document.getElementById('title').innerHTML =
+			(jobResult.get("error")?'<div style="color:red">ERROR:':'<div>')+jobResult.get("message")+'</div>';
+
+		var states = jobResult.get("states");
+		console.log(states.length);
+		for (var i = 0; i < states.length; i++) {
+			var state = states[i];
+			var name = state.name;
+			console.log(name);
+			var ResponseText = Parse.Object.extend("ResponseText");
+			var query = new Parse.Query(ResponseText);
+			query.get(state.response.textId, {
+				success:function(text) {
+					document.getElementById('mainList').innerHTML += 
+						'<li>'+name+
+							'<ul>'+
+								'<li>'+state.request.url+'</li>'+
+								'<li>query params'+toHtmlList(state.request.body, name+'RQB')+'</li>'+
+								'<li>response headers'+toHtmlList(state.response.headers, name+'RSH')+'</li>'+
+								'<li>response cookies'+toHtmlList(state.response.cookies, name+'RSC')+'</li>'+
+								'<li><a href="body.html?textId='+state.response.textId+'" target="blank">response body</a> - '+text.createdAt+'</li>'+
+							'</ul>'+
+						'</li>';
+				},
+				error:function(obj, msg) {
+					console.error(msg);
+				}
+			})
+		}
+	}
+	var JobResult = Parse.Object.extend("JobResult");
+	var query = new Parse.Query(JobResult);
+	query.get(parseQueryString().jobResultId, {
+		success:function(jobResult) {
+			showJobResult(jobResult);
+		},
+		error:function(obj, msg) {
+			console.error(msg);
+		}
+	})
+	</script>
+  </body>
+</html>

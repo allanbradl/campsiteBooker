@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "Recreation.gov Scheduler": {
+            "applicationId": "WTgKoETfuN6XnWUaZjVFADDK7DwPtmxXa4VIpMCP", 
+            "masterKey": "KmkN93x4KgkxgM0JJomgsSO6vgW3I19xYefc6udA"
+        }, 
+        "_default": {
+            "link": "Recreation.gov Scheduler"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.18"
+    }
+}

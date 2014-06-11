@@ -1,0 +1,16 @@
+HTTP/1.1 302 Moved Temporarily
+Server: Apache
+Location: http://www.recreation.gov/unifSearch.do;jsessionid=B97D04829328F43E9ED5791C506436BF.web09-ny
+Vary: Accept-Encoding
+Content-Encoding: gzip
+Content-Length: 20
+Content-Type: text/html;charset=UTF-8
+Expires: Tue, 27 May 2014 22:59:18 GMT
+Cache-Control: max-age=0, no-cache, no-store
+Pragma: no-cache
+Date: Tue, 27 May 2014 22:59:18 GMT
+Connection: keep-alive
+Set-Cookie: JSESSIONID=B97D04829328F43E9ED5791C506436BF.web09-ny; Path=/
+Set-Cookie: _rauv_=B97D04829328F43E9ED5791C506436BF.web09-ny_; Domain=.recreation.gov; Expires=Mon, 22-May-2034 22:59:18 GMT; Path=/
+Set-Cookie: NSC_QSPE-VXQSFD-IUUQ=ffffffff09293c2a45525d5f4f58455e445a4a4225dd;Version=1;Max-Age=3600;path=/;httponly
+

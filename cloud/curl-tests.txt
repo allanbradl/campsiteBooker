@@ -1,0 +1,112 @@
+#good login
+curl -X POST \
+  -H "X-Parse-Application-Id: WTgKoETfuN6XnWUaZjVFADDK7DwPtmxXa4VIpMCP" \
+  -H "X-Parse-Master-Key: KmkN93x4KgkxgM0JJomgsSO6vgW3I19xYefc6udA" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"jessehull@gmail.com", "password":"flyfly"}' \
+  https://api.parse.com/1/jobs/login
+  
+#bad login
+curl -X POST \
+    -H "X-Parse-Application-Id: WTgKoETfuN6XnWUaZjVFADDK7DwPtmxXa4VIpMCP" \
+    -H "X-Parse-Master-Key: KmkN93x4KgkxgM0JJomgsSO6vgW3I19xYefc6udA" \
+    -H "Content-Type: application/json" \
+    -d '{"username":"jessehull@gmail.com", "password":"flyfl"}' \
+    https://api.parse.com/1/jobs/login
+	
+#should work
+curl -X POST \
+  -H "X-Parse-Application-Id: WTgKoETfuN6XnWUaZjVFADDK7DwPtmxXa4VIpMCP" \
+  -H "X-Parse-Master-Key: KmkN93x4KgkxgM0JJomgsSO6vgW3I19xYefc6udA" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"jessehull@gmail.com", "password":"flyfly","parkId":"70928","campingDate":"Sun Oct 12 2014","lengthOfStay":"3"}' \
+  https://api.parse.com/1/jobs/loginAndDetails
+  
+curl -X POST \
+  -H "X-Parse-Application-Id: WTgKoETfuN6XnWUaZjVFADDK7DwPtmxXa4VIpMCP" \
+  -H "X-Parse-Master-Key: KmkN93x4KgkxgM0JJomgsSO6vgW3I19xYefc6udA" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"jessehull@gmail.com", "password":"flyfly","parkId":"70928","campingDate":"Fri Oct 10 2014","lengthOfStay":"3"}' \
+  https://api.parse.com/1/jobs/loginAndDetails
+  
+  
+curl -X POST \
+  -H "X-Parse-Application-Id: WTgKoETfuN6XnWUaZjVFADDK7DwPtmxXa4VIpMCP" \
+  -H "X-Parse-Master-Key: KmkN93x4KgkxgM0JJomgsSO6vgW3I19xYefc6udA" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"jessehull@gmail.com", "password":"flyfly","parkId":"70928","campingDate":"Fri Oct 10 2014","lengthOfStay":"3"}' \
+  https://api.parse.com/1/jobs/newLoginAndDetails
+
+
+ParkIds
+70972 - Kirby Cove
+everyday at 9pm PST (midnight following day EST) open for 3 months and 1 day in advance. 
+
+70925 - Upper Pines Yosemite
+70926 - Tuolomne
+70927 - North Pines Yosemite
+70928 - Lower Pines Yosemite
+Reservations must be made 1 Days(s) ahead of arrival and can be made up to 5 Month(s) in advance.
+New dates are released in blocks, 1 Month(s) at a time.
+The next on-sale is Sun Jun 15 2014 7am PST for Oct 15-Nov 14
+
+lookingFor
+<blank> - all
+2001 - RV sites
+2002- Trailer sites
+2003 - Tent
+3100 - Tent-only sites
+10001- Cabins
+3101 - Lookouts
+9002- Group sites
+9001- Day use &amp; Picnic areas
+3001- Horse sites
+2004 - Boat sites
+3102 - Yurts
+
+curl -X POST \
+  -H "X-Parse-Application-Id: WTgKoETfuN6XnWUaZjVFADDK7DwPtmxXa4VIpMCP" \
+  -H "X-Parse-Master-Key: KmkN93x4KgkxgM0JJomgsSO6vgW3I19xYefc6udA" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"jessehull@gmail.com", "password":"flyfly","lookingFor":"3100","parkId":"70972","campingDate":"Wed Aug 27 2014","lengthOfStay":"1","cardType":"VISA", "cardNumber":"11111111", "securityCode":"111","expMonth":"02","expYear":"2015","firstName":"Jesse","lastName":"Hull"}' \
+  https://api.parse.com/1/jobs/newLoginAndDetails
+
+
+curl -X POST \
+  -H "X-Parse-Application-Id: WTgKoETfuN6XnWUaZjVFADDK7DwPtmxXa4VIpMCP" \
+  -H "X-Parse-Master-Key: KmkN93x4KgkxgM0JJomgsSO6vgW3I19xYefc6udA" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"jessehull@gmail.com", "password":"flyfly","lookingFor":"3100","parkId":"70972","campingDate":"Tue Sep 02 2014","lengthOfStay":"1","cardType":"VISA", "cardNumber":"4147099779024171", "securityCode":"88","expMonth":"01","expYear":"2017","firstName":"Jesse","lastName":"Hull"}' \
+  https://api.parse.com/1/jobs/newLoginAndDetails
+  
+{"username":"jessehull@gmail.com", "password":"flyfly","lookingFor":"3100","parkId":"70972","campingDate":"Tue Sep 03 2014","lengthOfStay":"1","cardType":"VISA", "cardNumber":"4147099779024171", "securityCode":"818","expMonth":"01","expYear":"2017","firstName":"Jesse","lastName":"Hull"}
+
+user
+	accounts {
+		"recreation" : {
+			"username":"jessehull@gmail.com", "password":"flyfly"
+		},
+		"reserveamerica" : {
+			"username":"jessehull@gmail.com", "password":"flyfly"
+		}
+	}
+	creditcard {
+		"cardType":"VISA", "cardNumber":"4147099779024171", "securityCode":"818","expMonth":"01","expYear":"2017","firstName":"Jesse","lastName":"Hull"
+	}
+
+ReserveJob {
+	userId:<>
+	"lookingFor":"3100","parkId":"70972","campingDate":"Tue Sep 03 2014","lengthOfStay":"1",
+	jobResultId:"",
+	bookAttempted:true|false,
+	timeToBook:<date-and-time> 
+}
+
+curl -X POST \
+  -H "X-Parse-Application-Id: WTgKoETfuN6XnWUaZjVFADDK7DwPtmxXa4VIpMCP" \
+  -H "X-Parse-Master-Key: KmkN93x4KgkxgM0JJomgsSO6vgW3I19xYefc6udA" \
+  -H "Content-Type: application/json" \
+  -d '{}' \
+  https://api.parse.com/1/jobs/booksites
+  
+

@@ -1,0 +1,29 @@
+
+<html>
+  <head>
+    <title>My ParseApp site</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://www.parsecdn.com/js/parse-1.2.18.min.js"></script>
+	<script src="utils.js"></script>
+	<script>
+			Parse.initialize("WTgKoETfuN6XnWUaZjVFADDK7DwPtmxXa4VIpMCP", "S8zdUfhpKy9oml2av2qfSUcc2SC8Tv28Hl63YTnf");
+	</script>
+  </head>
+  <body>
+	  <div id="content">
+	  </div>
+	<script>
+	var ResponseText = Parse.Object.extend("ResponseText");
+	var query = new Parse.Query(ResponseText);
+	query.get(parseQueryString().textId, {
+		success:function(responseText) {
+			var html = responseText.get("text");
+			document.getElementById('content').innerHTML = html;
+		},
+		error:function(obj, msg) {
+			console.error(msg);
+		}
+	})
+	</script>
+  </body>
+</html>

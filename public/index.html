@@ -1,0 +1,43 @@
+
+<html>
+  <head>
+    <title>Booking Attempts</title>
+	<script src="http://www.parsecdn.com/js/parse-1.2.18.min.js"></script>
+	<script src="utils.js"></script>
+	<script>
+			Parse.initialize("WTgKoETfuN6XnWUaZjVFADDK7DwPtmxXa4VIpMCP", "S8zdUfhpKy9oml2av2qfSUcc2SC8Tv28Hl63YTnf");
+	</script>
+  </head>
+  <body>
+	  <table id="mainTable">
+		  <tr>
+			  <td>id</td>
+			  <td>status</td>
+			  <td>created</td>
+		  </tr>
+	  </table>
+	<script>
+	var JobResult = Parse.Object.extend("JobResult");
+	var query = new Parse.Query(JobResult);
+	query.descending("createdAt");
+	query.limit(20);
+	query.find({
+		success:function(results) {
+		    for (var i = 0; i < results.length; i++) { 
+				var jobResult = results[i];
+				var msg = jobResult.get("message");
+				if (msg) {
+					msg = msg.substring(0, 100);
+				}
+				document.getElementById('mainTable').innerHTML += '<tr><td><a href="jobResult.html?jobResultId='+jobResult.id+'">'+jobResult.id+'</a></td>'+
+					'<td>'+(jobResult.get("error")?'<div style="color:red">ERROR:':'<div>')+msg+'</div></td>'+
+					'<td>'+jobResult.createdAt+'</td></tr>';
+		    }			
+		},
+		error:function(error) {
+			console.error("Error: " + error.code + " " + error.message);
+		}
+	})
+	</script>
+  </body>
+</html>

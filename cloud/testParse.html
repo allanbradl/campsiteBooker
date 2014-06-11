@@ -1,0 +1,98 @@
+<style>
+  .thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+  }
+</style>
+
+<input type="file" id="files" name="files[]" multiple />
+<output id="list"></output>
+
+<script>
+  function parseCampsiteResults(txt) {
+	  var r = {
+		  canBook:false, 
+		  parseError:""
+	  }
+  	  var shopStart = txt.indexOf("id='shoppingitems'");
+	  if (shopStart == -1) {
+		  r.parseError = "Unable to find shoppingitems table";
+		  return r;
+	  }
+	  var shopEnd = txt.indexOf("</table>", shopStart);
+	  if (shopEnd == -1) {
+		  r.parseError = "Unable to find shoppingitems table";
+		  return r;
+	  }
+	  var shopTable = txt.substring(shopStart, shopEnd);
+	  var bodyStart = shopTable.indexOf("<tbody>");
+	  if (bodyStart == -1) {
+		  r.parseError = "Unable to find start of table body";
+		  return r;
+	  }
+	  var shopBody = shopTable.substring(bodyStart, shopTable.length);
+	  if (shopBody.indexOf("<tr") == -1) {
+		  r.parseError = "no rows in table body";
+		  return r;	  	
+	  }
+	  var firstRow = shopBody.split("<tr")[1];
+	  var columns = firstRow.split("<td");
+	  if (columns.length != 8) {
+		  r.parseError = "wrong number of columns in first row of table: "+columns.length;
+		  return r;	  	
+	  }
+	  var data = columns[7];
+	  if (data.indexOf("Book Now")==-1) {
+		  r.parseError = "data does not contain book now: " + data;
+		  return r;
+	  }
+	  var urlStart = data.indexOf("<a href='");
+	  if (urlStart==-1) {
+		  r.parseError = "no in href data: " + data;
+		  return r;
+	  }
+	  var urlEnd = data.indexOf("'", urlStart+9)
+	  if (urlEnd==-1) {
+		  r.parseError = "no end href in data: " + data;
+		  return r;
+	  }
+	  var url = data.substring(urlStart+9, urlEnd);
+	  r.canBook = true;
+	  r.bookUrl = url;
+	  return r;
+  }
+  function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = 
+        function(e) {
+          var r = parseCampsiteResults(e.target.result);
+		  if (!r.canBook) {
+			  alert("ERROR: "+r.parseError);
+		  } else {
+			  alert(r.bookUrl);
+		  }
+	    };
+
+      // Read in the image file as a data URL.
+      reader.readAsText(f);
+    }
+  }
+/*  var data = "<form name='booksiteform' method='POST' action='/switchBookingAction.do'  class='book' id='booksiteform' onSubmit='return submitHandler(this);'><input type='hidden' value='NRSO' name='contractCode' id='contractCode'/><input type='hidden' value='70928' name='parkId' id='parkId'/><div class='panelGroup'>";
+  var r = new RegExp("<input[^>]*value='([^']*)'[^>]*name='contractCode'[^>]*\\/>");
+  var arr = r.exec(data);
+  console.log(arr[0]);
+  console.log(arr[1]);*/
+  
+  var s= "Sun Oct 12 2014";
+  var d=new Date(s);
+  alert(d.toLocaleDateString());
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+</script>
