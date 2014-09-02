@@ -1,43 +1,22 @@
 
-<html>
+<html ng-app="booksitesApp">
   <head>
-    <title>Booking Attempts</title>
+    <title>Booking Camping Sites</title>
+     <link rel="stylesheet" href="css/app.css">
+
 	<script src="http://www.parsecdn.com/js/parse-1.2.18.min.js"></script>
-	<script src="utils.js"></script>
 	<script>
 			Parse.initialize("WTgKoETfuN6XnWUaZjVFADDK7DwPtmxXa4VIpMCP", "S8zdUfhpKy9oml2av2qfSUcc2SC8Tv28Hl63YTnf");
 	</script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/parse-angular-patch/dist/parse-angular.js"></script>
+	<script src="js/utils.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/controllers.js"></script>
   </head>
   <body>
-	  <table id="mainTable">
-		  <tr>
-			  <td>id</td>
-			  <td>status</td>
-			  <td>created</td>
-		  </tr>
-	  </table>
-	<script>
-	var JobResult = Parse.Object.extend("JobResult");
-	var query = new Parse.Query(JobResult);
-	query.descending("createdAt");
-	query.limit(20);
-	query.find({
-		success:function(results) {
-		    for (var i = 0; i < results.length; i++) { 
-				var jobResult = results[i];
-				var msg = jobResult.get("message");
-				if (msg) {
-					msg = msg.substring(0, 100);
-				}
-				document.getElementById('mainTable').innerHTML += '<tr><td><a href="jobResult.html?jobResultId='+jobResult.id+'">'+jobResult.id+'</a></td>'+
-					'<td>'+(jobResult.get("error")?'<div style="color:red">ERROR:':'<div>')+msg+'</div></td>'+
-					'<td>'+jobResult.createdAt+'</td></tr>';
-		    }			
-		},
-		error:function(error) {
-			console.error("Error: " + error.code + " " + error.message);
-		}
-	})
-	</script>
+	  <div ng-view></div>
   </body>
 </html>

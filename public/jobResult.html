@@ -4,7 +4,7 @@
     <title>My ParseApp site</title>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script src="http://www.parsecdn.com/js/parse-1.2.18.min.js"></script>
-	<script src="utils.js"></script>
+	<script src="js/utils.js"></script>
 	<script>
 			Parse.initialize("WTgKoETfuN6XnWUaZjVFADDK7DwPtmxXa4VIpMCP", "S8zdUfhpKy9oml2av2qfSUcc2SC8Tv28Hl63YTnf");
 	</script>
@@ -27,23 +27,16 @@
 			console.log(name);
 			var ResponseText = Parse.Object.extend("ResponseText");
 			var query = new Parse.Query(ResponseText);
-			query.get(state.response.textId, {
-				success:function(text) {
-					document.getElementById('mainList').innerHTML += 
-						'<li>'+name+
-							'<ul>'+
-								'<li>'+state.request.url+'</li>'+
-								'<li>query params'+toHtmlList(state.request.body, name+'RQB')+'</li>'+
-								'<li>response headers'+toHtmlList(state.response.headers, name+'RSH')+'</li>'+
-								'<li>response cookies'+toHtmlList(state.response.cookies, name+'RSC')+'</li>'+
-								'<li><a href="body.html?textId='+state.response.textId+'" target="blank">response body</a> - '+text.createdAt+'</li>'+
-							'</ul>'+
-						'</li>';
-				},
-				error:function(obj, msg) {
-					console.error(msg);
-				}
-			})
+			document.getElementById('mainList').innerHTML += 
+				'<li>'+name+
+					'<ul>'+
+						'<li>'+state.request.url+'</li>'+
+						'<li>query params'+toHtmlList(state.request.body, name+'RQB')+'</li>'+
+						'<li>response headers'+toHtmlList(state.response.headers, name+'RSH')+'</li>'+
+						'<li>response cookies'+toHtmlList(state.response.cookies, name+'RSC')+'</li>'+
+						'<li><a href="body.html?textId='+state.response.textId+'" target="blank">response body</a></li>'+
+					'</ul>'+
+				'</li>';
 		}
 	}
 	var JobResult = Parse.Object.extend("JobResult");

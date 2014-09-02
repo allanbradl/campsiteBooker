@@ -1,0 +1,12 @@
+<table>
+  <tr>
+	  <td>id</td>
+	  <td>status</td>
+	  <td>created</td>
+  </tr>
+  <tr ng-repeat="jobResult in jobResults">
+	  <td><a href="#/jobResults/{{jobResult.id}}">{{jobResult.id}}</a></td>
+	  <td><div style="{{(jobResult.getError()?'color:red':'')}}">{{jobResult.getShortMessage()}}</div></td>
+	  <td>{{jobResult.createdAt | date:'medium'}}</td>
+  </tr>
+</table>

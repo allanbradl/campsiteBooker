@@ -1,0 +1,14 @@
+HTTP/1.1 200 OK
+Server: Apache
+Content-Type: text/html;charset=UTF-8
+Expires: Tue, 02 Sep 2014 15:57:07 GMT
+Cache-Control: max-age=0, no-cache, no-store
+Pragma: no-cache
+Date: Tue, 02 Sep 2014 15:57:07 GMT
+Transfer-Encoding:  chunked
+Connection: keep-alive
+Connection: Transfer-Encoding
+Set-Cookie: _rauv_=1465FDA3CEDE99D99779F39258EF886F.web10-ny_; Domain=.recreation.gov; Expires=Mon, 28-Aug-2034 15:57:06 GMT; Path=/
+Set-Cookie: _rauv_=1465FDA3CEDE99D99779F39258EF886F.web10-ny_; Domain=.recreation.gov; Expires=Mon, 28-Aug-2034 15:57:06 GMT; Path=/
+Set-Cookie: NSC_QSPE-VXQSFD-IUUQ=ffffffff09293c2b45525d5f4f58455e445a4a4225dd;Version=1;Max-Age=3600;path=/;httponly
+

@@ -34,6 +34,7 @@
 <style type="text/css"> @import url('/style/common.css');</style>
 <style type="text/css"> @import url('/style/ajax.css');</style>
 <style type="text/css"> @import url('/style/ext_style/usearch.css');</style>
+<style type="text/css"> @import url('/style/fontawesome/font-awesome.min.css');</style>
 <style type="text/css"> @import url('/style/account.css');</style>
 
 	  
@@ -87,7 +88,8 @@
   <script type="text/javascript">submitted = 0;</script>
   
 
-   <div id="pageContainer">
+  
+  <div id="pageContainer">
 	<div id="page">
 	  <script type="text/javascript" src="/foresee/foresee-alive.js"></script>
 
@@ -114,11 +116,10 @@
     vertical-align: top;
 }
 </style>
-<a href="/marketing.do?goto=acm/faqs/Your_Federal_Lands_Open_for_Visitation.htm" title="Reservation Refund Questions">
-<div style="color: #FEB305">Reservation</div>
-<div>Refund</div>
-<div>Questions...</div>
-</a>
+<a href="/marketing.do?goto=acm/Explore_Go_Lists/letsgocamping.htm" title="Let's Do Camping...">
+<div>Let's Go</div>
+<div style="color: #FEB305">Camping...</div>
+</a> 
 </div>
 <!--End Temp Announcment-->
 <div id="banner" style="padding:0; margin:0;height : 60px;overflow:hidden;" class='hidden-phone'>
@@ -130,9 +131,10 @@
 		<iframe id="fbheaderiframe" src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FRecreationgov%2F132630653420787&amp;send=false&amp;layout=button_count&amp;width=110&amp;show_faces=false&amp;action=like&amp;colorscheme=dark&amp;font=arial&amp;height=21&amp;appId=101538589962516" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:80px; height:30px; margin: 10px 0px 0px 10px;" allowTransparency="true"></iframe>		
 		<div id="socialBannerYt"><a href="http://www.youtube.com/Recreationdotgov" target="_blank"><img id="headerYouTube" src="/images/YouTube.png"  width="30" height="30" alt="Recreation.gov - YouTube" title="Recreation.gov - YouTube"></a></div>
 		<div id="socialBannerFb"><a href="http://www.facebook.com/pages/Recreationgov/132630653420787" target="_blank"><img id="headerFacebook" src="/images/Facebook_header.png"  width="30" height="30" alt="Recreation.gov - Facebook" title="Recreation.gov - Facebook"></a></div>
+		<div id="socialBannerIn"><a href="http://instagram.com/recreation_gov# " target="_blank"><img id="headerInstagram" src="/images/Instagram_header.png"  width="30" height="30" alt="Recreation.gov - Instagram" title="Recreation.gov - Instagram"></a></div>
 	</div>
 	<div id="contactUs">
-		Toll-free reservation line: 1-877-444-6777 (10:00 AM - Midnight EST) <a href="/contact.do">Other ways to contact us</a>
+		Need to Contact Us?<a href="/contact.do">Click Here!</a>
 	</div>	
 </div>
 
@@ -203,6 +205,13 @@ $j(document).ready(function(){
 						// open exit message
 						$j("#exit_disclaimer_content").html("<table cellpadding='20'><tr><td valign='middle'><h2>You are exiting the Recreation.gov website</h2><h3>Thank you for visiting our site.</h3><p>You will now be redirected to:<br /><a class='link_truncated' id='exitBox-destHref' href='" + destURL + "' >" + destURL + "</a></p><p>We hope your visit was informative and enjoyable.</p></td></tr></table>");
 						$j("#exit_disclaimer_opener").trigger('click');
+						w = jq(window).width();
+						if( w < 500 ){
+							$j("#modalPopLite-wrapper1").css("width", "80%")
+							$j("#modalPopLite-wrapper1").css("left", "10%")
+							$j("#exitBox-destHref").css( "width", "70%")
+						}
+						
 						// pause and redirect
 						exitMsgTimeout = window.setTimeout(function() {
 							window.location = destURL;
@@ -261,7 +270,8 @@ function removeExitMsg(){
 
 <div class='cartStatus'>
 <div id='shoppingcart'>
-<span id='cartLink'><a href='/viewShoppingCart.do'    >Items In Cart: 0</a></span></div></div>
+<div class='shop_cart_links'><a href='/viewShoppingCart.do'  id='cartLink'   >Items In Cart: 0</a></div></div></div>
+
 
 
 
@@ -269,6 +279,7 @@ function removeExitMsg(){
 
 
 <div id="pagearea">
+
 
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%" style="border-collapse: collapse" class='layout'>
@@ -326,7 +337,7 @@ function removeExitMsg(){
 <div class='contenthdr'><h3>Profile Overview</h3></div>
 <div class='contentin'>
 <div class='inbx'>Name:
-<span class='bold'>Jesse Holl</span><br>Email Address:
+<span class='bold'>Jesse Hull</span><br>Email Address:
 <span class='bold'><a href='/memberUpdateEmail.do'    >jessehull@gmail.com</a></span><br>Phone:
 <span class='bold'><a href='/memberUpdateProfile.do'    >510 967 4275</a></span><br></div>
 <div class='inbx'>Is this information correct?&nbsp;<a href='/memberUpdateProfile.do'    >Update Profile</a></div></div></div>
@@ -556,7 +567,7 @@ s_tan.events="event10,scOpen";
 s_tan.prop10="logged in";
 s_tan.prop23="11444020";
 s_tan.state="CA";
-s_tan.zip="94122";
+s_tan.zip="94114";
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
 var s_code=s_tan.t();if(s_code)document.write(s_code)//--></script>
 <!-- End SiteCatalyst code version: H.21. -->
@@ -574,14 +585,14 @@ var s_code=s_tan.t();if(s_code)document.write(s_code)//--></script>
   		fullTitle = window.location.href;
   		shortTitle = fullTitle.substring(fullTitle.indexOf("?")+1,fullTitle.length);
   	}
-  	
-  	pageTracker._setCustomVar(1,'customerid','11444020',3);
-  	pageTracker._setCustomVar(2,'contract','NRSO',3);
+  	if (pageTracker) {
+  		pageTracker._setCustomVar(1,'customerid','11444020',3);
+  		pageTracker._setCustomVar(2,'contract','NRSO',3);
+  		
 
-  	
+			pageTracker._trackPageview(shortTitle.length==0 ? document.title : shortTitle);
+  	}
 
-		pageTracker._trackPageview(shortTitle.length==0 ? document.title : shortTitle);
-	
   </script>
   
   <!-- for test only -->

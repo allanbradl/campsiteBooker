@@ -40,12 +40,12 @@ curl -X POST \
 
 ParkIds
 70972 - Kirby Cove
-everyday at 9pm PST (midnight following day EST) open for 3 months and 1 day in advance. 
+everyday at 7am PST open for 3 months in advance. 
 
-70925 - Upper Pines Yosemite
-70926 - Tuolomne
-70927 - North Pines Yosemite
-70928 - Lower Pines Yosemite
+70925 - Upper Pines Yosemite Wed Mar 19 2014	Sun Nov 30 2014 {"open":{"month":3, "day":19}, "close":{"month":11, "day":30}}
+70926 - Tuolomne {"open":{"month":6, "day":8}, "close":{"month":9, "day":27}}
+70927 - North Pines Yosemite {"open":{"month":4, "day":2}, "close":{"month":11, "day":2}}
+70928 - Lower Pines Yosemite {"open":{"month":3, "day":26}, "close":{"month":10, "day":26}}
 Reservations must be made 1 Days(s) ahead of arrival and can be made up to 5 Month(s) in advance.
 New dates are released in blocks, 1 Month(s) at a time.
 The next on-sale is Sun Jun 15 2014 7am PST for Oct 15-Nov 14
@@ -109,4 +109,8 @@ curl -X POST \
   -d '{}' \
   https://api.parse.com/1/jobs/booksites
   
-
+_rauv_=F6280FFDB7AC2420C3E83E26084BF394.web08-ny_; 
+fsr.r=%7B%22d%22%3A30%2C%22i%22%3A%22de37432-93960948-dc7e-18c9-54e54%22%2C%22e%22%3A1408729803356%7D; 
+JSESSIONID=AB1DB2CA20EF7E4E7097E03DEC895592.web06-ny; 
+s_sq=%5B%5BB%5D%5D; NSC_QSPE-VXQSFD-IUUQ=ffffffff09293c2a45525d5f4f58455e445a4a4225dd; __utma=76801942.2035795484.1400161804.1409461215.1409500984.56; __utmb=76801942.28.10.1409500984; __utmc=76801942; __utmz=76801942.1409500984.56.26.utmcsr=campbooker.parseapp.com|utmccn=(referral)|utmcmd=referral|utmcct=/body.html; utag_main=_st:1409503747655$ses_id:1409501912344%3Bexp-session; fsr.s=%7B%22v2%22%3A1%2C%22v1%22%3A1%2C%22rid%22%3A%22de37432-93960948-dc7e-18c9-54e54%22%2C%22to%22%3A2%2C%22mid%22%3A%22de37432-93961175-737e-f546-071ae%22%2C%22rt%22%3Afalse%2C%22rc%22%3Atrue%2C%22c%22%3A%22http%3A%2F%2Fwww.recreation.gov%2FcampsiteSearch.do%22%2C%22pv%22%3A214%2C%22lc%22%3A%7B%22d0%22%3A%7B%22v%22%3A214%2C%22s%22%3Atrue%7D%7D%2C%22cd%22%3A0%2C%22f%22%3A1409501947268%2C%22sd%22%3A0%2C%22l%22%3A%22en%22%2C%22i%22%3A-1%7D; 
+fsr.a=1409501960656; s_sess=%20s_cc%3Dtrue%3B%20SC_LINKS%3D%3B%20s_sq%3Danreserveamericaprod%253D%252526pid%25253Drecreation%2525253Afind%25252520campsites%252526pidt%25253D1%252526oid%25253Dfunctiononclick%25252528event%25252529%2525257BUnifSearchEngine.submitForm%25252528%25252529%2525253B%2525257D%252526oidt%25253D2%252526ot%25253DSUBMIT%3B

@@ -1,0 +1,13 @@
+<div style="{{(jobResult.getError()?'color:red':'')}}">{{jobResult.getMessage()}}</div>
+<ul id="mainList">
+	<li ng-repeat="state in jobResult.get('states')">
+		{{state.name}}
+		<ul>
+			<li>{{state.request.url}}</li>
+			<li>query params <object-as-list object="state.request.body"/></li>
+			<li>response headers <object-as-list object="state.response.headers"/></li>
+			<li>response cookies <object-as-list object="state.response.cookies"/></li>
+			<li><a href="body.html?textId={{state.response.textId}}" target="blank">response body</a> - {{createdDates[state.name] | date:'MMM d, y h:mm:ss.sss a'}}</li>
+		</ul>
+	</li>
+</ul>

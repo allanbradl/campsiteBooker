@@ -34,6 +34,7 @@
 <style type="text/css"> @import url('/style/common.css');</style>
 <style type="text/css"> @import url('/style/ajax.css');</style>
 <style type="text/css"> @import url('/style/ext_style/usearch.css');</style>
+<style type="text/css"> @import url('/style/fontawesome/font-awesome.min.css');</style>
 <style type="text/css"> @import url('/style/cart.css');</style>
 
 	  
@@ -85,7 +86,8 @@
   <script type="text/javascript">submitted = 0;</script>
   
 
-   <div id="pageContainer">
+  
+  <div id="pageContainer">
 	<div id="page">
 	  <script type="text/javascript" src="/foresee/foresee-alive.js"></script>
 
@@ -112,11 +114,10 @@
     vertical-align: top;
 }
 </style>
-<a href="/marketing.do?goto=acm/faqs/Your_Federal_Lands_Open_for_Visitation.htm" title="Reservation Refund Questions">
-<div style="color: #FEB305">Reservation</div>
-<div>Refund</div>
-<div>Questions...</div>
-</a>
+<a href="/marketing.do?goto=acm/Explore_Go_Lists/letsgocamping.htm" title="Let's Do Camping...">
+<div>Let's Go</div>
+<div style="color: #FEB305">Camping...</div>
+</a> 
 </div>
 <!--End Temp Announcment-->
 <div id="banner" style="padding:0; margin:0;height : 60px;overflow:hidden;" class='hidden-phone'>
@@ -128,9 +129,10 @@
 		<iframe id="fbheaderiframe" src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FRecreationgov%2F132630653420787&amp;send=false&amp;layout=button_count&amp;width=110&amp;show_faces=false&amp;action=like&amp;colorscheme=dark&amp;font=arial&amp;height=21&amp;appId=101538589962516" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:80px; height:30px; margin: 10px 0px 0px 10px;" allowTransparency="true"></iframe>		
 		<div id="socialBannerYt"><a href="http://www.youtube.com/Recreationdotgov" target="_blank"><img id="headerYouTube" src="/images/YouTube.png"  width="30" height="30" alt="Recreation.gov - YouTube" title="Recreation.gov - YouTube"></a></div>
 		<div id="socialBannerFb"><a href="http://www.facebook.com/pages/Recreationgov/132630653420787" target="_blank"><img id="headerFacebook" src="/images/Facebook_header.png"  width="30" height="30" alt="Recreation.gov - Facebook" title="Recreation.gov - Facebook"></a></div>
+		<div id="socialBannerIn"><a href="http://instagram.com/recreation_gov# " target="_blank"><img id="headerInstagram" src="/images/Instagram_header.png"  width="30" height="30" alt="Recreation.gov - Instagram" title="Recreation.gov - Instagram"></a></div>
 	</div>
 	<div id="contactUs">
-		Toll-free reservation line: 1-877-444-6777 (10:00 AM - Midnight EST) <a href="/contact.do">Other ways to contact us</a>
+		Need to Contact Us?<a href="/contact.do">Click Here!</a>
 	</div>	
 </div>
 
@@ -201,6 +203,13 @@ $j(document).ready(function(){
 						// open exit message
 						$j("#exit_disclaimer_content").html("<table cellpadding='20'><tr><td valign='middle'><h2>You are exiting the Recreation.gov website</h2><h3>Thank you for visiting our site.</h3><p>You will now be redirected to:<br /><a class='link_truncated' id='exitBox-destHref' href='" + destURL + "' >" + destURL + "</a></p><p>We hope your visit was informative and enjoyable.</p></td></tr></table>");
 						$j("#exit_disclaimer_opener").trigger('click');
+						w = jq(window).width();
+						if( w < 500 ){
+							$j("#modalPopLite-wrapper1").css("width", "80%")
+							$j("#modalPopLite-wrapper1").css("left", "10%")
+							$j("#exitBox-destHref").css( "width", "70%")
+						}
+						
 						// pause and redirect
 						exitMsgTimeout = window.setTimeout(function() {
 							window.location = destURL;
@@ -257,6 +266,7 @@ function removeExitMsg(){
 
 
 
+
 <div id="pagearea">
 
  
@@ -272,6 +282,7 @@ function removeExitMsg(){
 <span class='checkout_flow_item_text'>Checkout</span></div>
 <div id='checkout_flow_item_el5' class='checkout_flow_item el5'>
 <span class='checkout_flow_item_text'>Confirmation</span></div></div>
+
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%" style="border-collapse: collapse" class='layout'>
    <tr>
@@ -323,6 +334,13 @@ function removeExitMsg(){
 
 
 
+<script type="text/javascript">
+function confirmTripRemovals() {
+	return confirm("There are outstanding items in your itinerary. Clicking OK will process the cart without these additional items. Click Cancel and return to the Itinerary to add these additional items.");
+}
+
+</script>
+
 <div class="component">
 
   <!-- the header cart -->  
@@ -334,19 +352,19 @@ function removeExitMsg(){
 <div class='shophdrtop'>
 <div class='topleft'></div>
 <div class='hdr'>
-<div class='icon'></div><h1>Shopping Cart</h1></div>
+<div class='icon'></div><h1 >Shopping Cart</h1></div>
 <div class='topright'></div></div>
 <div class='ctrContent'>
 <div class='ctrLeft'></div>
 <div class='ctr'>
 <div class='cartStatus'>
 <div id='shoppingcart'>
-<span id='cartLink'><a href='/viewShoppingCart.do'    >Items In Cart: 1</a></span>
+<div class='shop_cart_links'><a href='/viewShoppingCart.do'  id='cartLink'   >Items In Cart: 1</a></div>
 <div id='timerContainer' class='bestbefore'>
 <span id='expired' class='expired'>Hold Expired! Your items will soon be reservable by others.</span>
 <div id='timer'>
 <span>Reservation is held for:</span>
-<input type='hidden' value='544.0' id='milliseconds'/>
+<input type='hidden' value='648.0' id='milliseconds'/>
 <span id='countdown'></span>
 <script type="text/javascript">countdown();</script>
 </div></div></div></div></div>
@@ -365,37 +383,37 @@ function removeExitMsg(){
 <td class='text' colspan='3' >
 <div class='removeitem'><a href='javascript:document.shoppingCartForm.submit()'  id='removeitem'   >Remove marked Items</a></div></td>
 <td class='text' colspan='2' >
-<div class='otherlinks'><a href='/removeItemFromShoppingCart.do?removeAll=21140026-9C19-43B2-AF68-E64C47EDAA37'  style='white-space: nowrap;'  onclick='return confirm("Are you sure you want to remove all the items from your cart?");'  >Abandon This Cart</a></div></td></tr></thead>
+<div class='otherlinks'><a href='/removeItemFromShoppingCart.do?removeAll=43F40911-8408-4E1F-8520-DFE64AF721B2'   onclick='return confirm("Are you sure you want to remove all the items from your cart?");'  >Abandon This Cart</a></div></td></tr></thead>
 <tbody>
 <tr class='partition'>
 <td class='text' colspan='5' >National Recreation Reservation Service (NRRS)</td></tr>
 <tr id='campingResRow'>
 <td class='input' ><div  ><input type='checkbox' name='checkedShoppingCartItems' id='ckitems' value='1'    ><label for='ckitems'>&nbsp;</label></div></td>
-<td class='text' >LOWER PINES, Yosemite National Park, CA<br>STANDARD NONELECTRIC<br>005, LP&nbsp;</td>
-<td class='text' style='width:27%' >
-<div style='display:inline'>Arriving: Sun Oct 12 2014</div>
-<div>Leaving: Wed Oct 15 2014</div>
-<div>Length of Stay: 3 (nights)</div>
-<div>Primary Jesse Holl</div>
+<td class='text' >UPPER PINES, Yosemite National Park, CA<br>STANDARD NONELECTRIC<br>001, UPPER PINES&nbsp;</td>
+<td class='text idetails' >
+<div style='display:inline'>Arriving: Wed Nov 12 2014</div>
+<div>Leaving: Thu Nov 13 2014</div>
+<div>Length of Stay: 1 (nights)</div>
+<div>Primary Jesse Hull</div>
 <div># of Occupants: 6</div>
 <div class='standout-button'><a href='/reservationDetails.do?currentItemId=1'    >Change Details</a></div></td>
 <td class='pricetd' colspan='2' >
 <div class='subtotal'>
 <div class='moneyLabel'>Camping Fee:</div>
-<div class='money'>$60.00</div></div></td></tr>
+<div class='money'>$20.00</div></div></td></tr>
 <tr class='totalarea sum'>
 <td class='exborder' colspan='3' ></td>
 <td class='pricetd' colspan='2' >
 <div class='subtotal'>
 <div class='moneyLabel'>Subtotal:</div>
-<div class='money'>$60.00</div></div>
+<div class='money'>$20.00</div></div>
 <div class='cartTotal'>
 <div class='moneyLabel'>Total:</div>
-<div class='money'>$60.00</div></div>
+<div class='money'>$20.00</div></div>
 <div class='total'>
 <div class='moneyLabel'>Balance:</div>
-<div class='money'>$60.00</div></div></td></tr></tbody></table>
-<input type='hidden' value='21140026-9C19-43B2-AF68-E64C47EDAA37' name='tkn' id='tkn'/></form>
+<div class='money'>$20.00</div></div></td></tr></tbody></table>
+<input type='hidden' value='43F40911-8408-4E1F-8520-DFE64AF721B2' name='tkn' id='tkn'/></form>
 <form name='submit-form' method='post' action='/checkoutShoppingCart.do'  class='mainform' id='submit-form' onSubmit='showProgressBar("progresspopup","Processing ...",null, "continuebutton"); return (submitted-- == 0);'>
 <div id='continuebutton' class='content btn'>
 <button id='chkout' class='all chkout' type='submit'>
@@ -580,7 +598,7 @@ s_tan.events="scView,event18";
 s_tan.prop10="logged in";
 s_tan.prop23="11444020";
 s_tan.state="CA";
-s_tan.zip="94122";
+s_tan.zip="94114";
 s_tan.prop30="ORMS";
 evar30="ORMS";
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
@@ -600,14 +618,14 @@ var s_code=s_tan.t();if(s_code)document.write(s_code)//--></script>
   		fullTitle = window.location.href;
   		shortTitle = fullTitle.substring(fullTitle.indexOf("?")+1,fullTitle.length);
   	}
-  	
-  	pageTracker._setCustomVar(1,'customerid','11444020',3);
-  	pageTracker._setCustomVar(2,'contract','NRSO',3);
+  	if (pageTracker) {
+  		pageTracker._setCustomVar(1,'customerid','11444020',3);
+  		pageTracker._setCustomVar(2,'contract','NRSO',3);
+  		
 
-  	
+			pageTracker._trackPageview(shortTitle.length==0 ? document.title : shortTitle);
+  	}
 
-		pageTracker._trackPageview(shortTitle.length==0 ? document.title : shortTitle);
-	
   </script>
   
   <!-- for test only -->

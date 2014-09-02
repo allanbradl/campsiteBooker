@@ -1,17 +1,20 @@
 var moment = require('moment');
 
 function StateMachine(user, reserveJob, status) {
+	this.stateNumber = 0;
 	this.user = user;
 	this.reserveJob = reserveJob;
 	this.status = status;
 	this.currentState = null;
 	this.jsessionid = null;
 	this.processNextState = function(newState, extractedData) {
+		var that = this;
+		that.stateNumber++;
 		extractedData = extractedData || {};
 		this.currentState = newState;
-		var stateData = this.getStateData();
+		var stateData = this.getStateData(extractedData.successData);
 		var args = {
-			method:'POST'
+			method:(extractedData.method || 'POST')
 		};
 		args.url = extractedData.url || stateData.url;
 		args.body = this.combine(extractedData.body, stateData.body);
@@ -21,8 +24,16 @@ function StateMachine(user, reserveJob, status) {
 			}
 		}
 		args.success = this.wrapWithLogger(stateData.success);
-		args.error = this.wrapWithLogger(stateData.error || this.defaultErrorHandler);
-		this.logRequest(args, function() { Parse.Cloud.httpRequest(args); });
+		args.error = this.wrapWithLogger(stateData.error || that.defaultErrorHandler);
+		this.logRequest(args, function() { 
+			if (!extractedData.pauseUntil) {
+				Parse.Cloud.httpRequest(args); 				
+			} else {
+				pause(extractedData.pauseUntil, function() {
+					Parse.Cloud.httpRequest(args); 	
+				});
+			}
+		});
 	};
 	this.wrapWithLogger = function(handler) {
 		var that = this;
@@ -61,18 +72,16 @@ function StateMachine(user, reserveJob, status) {
 		})
 	};
 	this.getLogState = function(states) {
-		for(var i = 0; i < states.length; i++) {
-			var state = states[i];
-			if (state.name == this.currentState) {
-				return state;
-			}
+		if (this.stateNumber-1 == states.length) {
+			var state = {};
+			state.name = this.currentState;
+			state.request = {};
+			state.response = {};
+			states.push(state);
+			return state;
+		} else {
+			return states[this.stateNumber-1];
 		}
-		var state = {};
-		state.name = this.currentState;
-		state.request = {};
-		state.response = {};
-		states.push(state);
-		return state;
 	}
 	this.getJobResult = function() {
 		var that = this;
@@ -143,8 +152,8 @@ function StateMachine(user, reserveJob, status) {
 			}
 		});
 	};
-	this.getStateData = function() {
-		return this['get'+this.currentState+'StateData']();
+	this.getStateData = function(successData) {
+		return this['get'+this.currentState+'StateData'](successData);
 	};
 	this.getLoginStateData = function() {
 		var that = this;
@@ -192,22 +201,55 @@ function StateMachine(user, reserveJob, status) {
 				lookingFor:that.reserveJob.get("lookingFor")
 			},
 			success:function(httpResponse) {
-				// we need to call this page twice but wait until booking window is open.
-				pause(that.reserveJob.get("timeToBook"), 
-					  function() { that.processNextState('CheckAvailability2'); });
+				// we need to call this page twice
+				that.processNextState('CheckAvailability2', {
+					successData:{
+						state:'searching',
+						firstPage:true
+					}
+				});
 			}
 		}
 	};
-	this.getCheckAvailability2StateData = function() {
+	this.getCheckAvailability2StateData = function(searchState) {
 		var that = this;
 		//same data. different success function.
-		var stateData = that.getCheckAvailability1StateData();
+		console.log("searchState = "+JSON.stringify(searchState));
+		var stateData = (searchState.firstPage ? that.getCheckAvailability1StateData() : {});
 		stateData.success = function(httpResponse) {
 			var r=parseCampsiteResults(httpResponse.text);
-			if (!r.canBook) {
+			if (!r.canBook && r.count.from == 1) {
+				// no bookable site and this is the first page. Error.
 				that.error(r.parseError);
 				return;
+			} else if (!r.canBook) {
+				// no bookable site on this page. so go back.
+				var url = 'http://www.recreation.gov/campsitePaging.do?startIdx='+(r.count.from-26)+'&contractCode=NRSO&parkId='+that.reserveJob.get("parkId");
+				that.processNextState('CheckAvailability2', {
+					url:url,
+					body: {
+					},
+					successData: {
+						state : 'found'
+					},
+					method:'GET'
+				});
+				return;
+			} else if (r.canBook && r.count.to != r.count.total && searchState.state =='searching') {
+				// there is a bookable site on this page but we want to keep looking on subsequent pages.
+				var url = 'http://www.recreation.gov/campsitePaging.do?startIdx='+r.count.to+'&contractCode=NRSO&parkId='+that.reserveJob.get("parkId");
+				that.processNextState('CheckAvailability2', {
+					url:url,
+					body: {
+					},
+					successData:{
+						state : 'searching'
+					},
+					method:'GET'
+				});
+				return;
 			}
+			// book the site we found on this page.
 			that.processNextState('CampsiteDetail', {
 				url:'http://www.recreation.gov'+r.bookUrl,
 				body:r.bookParams
@@ -237,7 +279,8 @@ function StateMachine(user, reserveJob, status) {
 				}
 				params['arvdate'] = moment(new Date(params.arrivaldate)).format('MM/DD/YYYY');
 				that.processNextState('SwitchBookingAction', {
-					body:params
+					body:params, 
+					pauseUntil:that.reserveJob.get("timeToBook")
 				});
 			}
 		};
@@ -309,18 +352,22 @@ function StateMachine(user, reserveJob, status) {
 					params[emptyParams[i]] = '';
 				}
 				that.processNextState('UpdateShoppingCart', {
-					body:params
+					body:params,
+					successData: {
+						params: params,
+						retries: 0
+					}
 				});
 			}
 		};
 	}
-	this.getUpdateShoppingCartStateData = function() {
+	this.getUpdateShoppingCartStateData = function(successData) {
 		var that = this;
 	    return {
 			url: 'https://www.recreation.gov/updateShoppingCartItem.do',
 			success:function(httpResponse) {
 				if (httpResponse.text.indexOf('Items In Cart: 1')==-1) {
-					that.error('failed to find string "Items In Cart: 1"');
+					that.error('failed to find string "Items In Cart: 1"');						
 					return;			
 				}
 				that.processNextState('CheckoutShoppingCart');
@@ -398,7 +445,8 @@ function StateMachine(user, reserveJob, status) {
 function pause(pauseUntil, finished) {
 	var f = 'MMMM Do YYYY, h:mm:ss a';
 	var now = new Date();
-	var pauseTime = pauseUntil.getTime() - now.getTime();
+	// wake up a bit early.
+	var pauseTime = pauseUntil.getTime() - now.getTime() - 200;
 	if (pauseTime > 0) {
 		console.log('currently ' + moment(now).format(f) + ' awake time is ' + moment(pauseUntil).format(f) + ' pausing for '+pauseTime+' ms');
 		pausecomp(pauseTime);
@@ -437,42 +485,115 @@ function parseCampsiteResults(txt) {
 	  r.parseError = "Unable to find start of table body";
 	  return r;
   }
+  var from = getSpanData(shopTable, "resultfrom");
+  var to = getSpanData(shopTable, "resultto");
+  var total = getSpanData(shopTable, "resulttotal");
+  if (from != -1 && to != -1 && total != -1) {
+	  r.count = {from:from, to:to, total:total};
+  }
   var shopBody = shopTable.substring(bodyStart, shopTable.length);
   if (shopBody.indexOf("<tr") == -1) {
 	  r.parseError = "no rows in table body";
 	  return r;	  	
   }
-  var firstRow = shopBody.split("<tr")[1];
-  var columns = firstRow.split("<td");
-  if (columns.length != 8) {
-	  r.parseError = "wrong number of columns in first row of table: "+columns.length;
-	  return r;	  	
+  var allRows = shopBody.split("<tr");
+  var validResults = [];
+  var rowParseError = "";
+  for (var i = 1 ; i < allRows.length  ; i++ ) {
+	  var rowData = allRows[i];
+	  var rowResults = parseRow(rowData);
+	  if (!rowResults.canBook) {
+		  rowParseError = rowResults.parseError;
+	  } else {
+		  validResults.push(rowResults);
+	  }
   }
-  var data = columns[7];
-  if (data.indexOf("See Details")==-1) {
-	  r.parseError = "Unable to find avialable campsite on given dates. data does not contain book now: " + data;
+  if (validResults.length == 0) {
+	  r.parseError = rowParseError;
 	  return r;
   }
-  var urlStart = data.indexOf("<a href='");
-  if (urlStart==-1) {
-	  r.parseError = "no in href data: " + data;
-	  return r;
+  var rowResultToUse = null;
+  if (validResults.length <= 2) {
+	  // if one or two items use the last item.
+  	rowResultToUse = validResults[validResults.length-1];
+  } else {
+	  // if more then 2 use a random item that is not first or last.
+	  var index = Math.floor((Math.random() * (validResults.length-2)) + 1);
+	  console.log("index = " + index);
+	  rowResultToUse = validResults[index];
   }
-  var urlEnd = data.indexOf("'", urlStart+9)
-  if (urlEnd==-1) {
-	  r.parseError = "no end href in data: " + data;
-	  return r;
-  }
-  var urlWithParams = data.substring(urlStart+9, urlEnd);
-  var urlParts = urlWithParams.split('?');
-  if (urlParts.length!=2) {
-	  r.parseError = "no '?' in url "+urlWithParams;
-	  return r;
-  }  
-  r.canBook = true;
-  r.bookUrl = urlParts[0];
-  r.bookParams = parseQueryString(urlParts[1].split("&amp;").join("&"));
+  console.log("validResults.length = " + validResults.length);
+  console.log("rowResultToUse = " + JSON.stringify(rowResultToUse));
+  r.canBook = rowResultToUse.canBook;
+  r.bookUrl = rowResultToUse.bookUrl;
+  r.bookParams = rowResultToUse.bookParams;
+  console.log("parse result = " +JSON.stringify(r));
   return r;
+}
+
+function getSpanData(shopTable, id) {
+	var search = "id='"+id+"'>";
+	var s = shopTable.indexOf(search);
+	if (s == -1) {
+		return -1;
+	}
+	var s2 = shopTable.indexOf("</span>", s)
+	if (s2 == -1) {
+		return -1;
+	}
+	var data = shopTable.substring(s+search.length, s2);
+	var num = parseInt(data);
+	if (isNaN(num)) {
+		return -1;
+	}
+	return num;
+}
+
+function parseRow(rowData) {
+    var r = {
+  	  canBook:false, 
+  	  parseError:""
+    }
+    var columns = rowData.split("<td");
+    if (columns.length != 8) {
+  	  r.parseError = "wrong number of columns in first row of table: "+columns.length;
+  	  return r;	  	
+    }
+    var accessibleData = columns[4];
+    if (accessibleData.indexOf("title='Accessible'")!=-1) {
+  	  r.parseError = "campsite is accessible only: " + rowData;
+  	  return r;
+    }
+    var accessibleData = columns[3];
+    if (accessibleData.indexOf("RV NONELECTRIC")!=-1) {
+  	  r.parseError = "campsite is RV NONELECTRIC: " + rowData;
+  	  return r;
+    }
+    var data = columns[7];
+    if (data.indexOf("See Details")==-1) {
+  	  r.parseError = "Unable to find avialable campsite on given dates. data does not contain book now: " + data;
+  	  return r;
+    }
+    var urlStart = data.indexOf("<a href='");
+    if (urlStart==-1) {
+  	  r.parseError = "no in href data: " + data;
+  	  return r;
+    }
+    var urlEnd = data.indexOf("'", urlStart+9)
+    if (urlEnd==-1) {
+  	  r.parseError = "no end href in data: " + data;
+  	  return r;
+    }
+    var urlWithParams = data.substring(urlStart+9, urlEnd);
+    var urlParts = urlWithParams.split('?');
+    if (urlParts.length!=2) {
+  	  r.parseError = "no '?' in url "+urlWithParams;
+  	  return r;
+    }  
+    r.canBook = true;
+    r.bookUrl = urlParts[0];
+    r.bookParams = parseQueryString(urlParts[1].split("&amp;").join("&"));
+    return r;	
 }
 
 function getFormValue(html, name) {

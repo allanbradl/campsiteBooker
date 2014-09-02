@@ -34,6 +34,7 @@
 <style type="text/css"> @import url('/style/common.css');</style>
 <style type="text/css"> @import url('/style/ajax.css');</style>
 <style type="text/css"> @import url('/style/ext_style/usearch.css');</style>
+<style type="text/css"> @import url('/style/fontawesome/font-awesome.min.css');</style>
 <style type="text/css"> @import url('/style/admin.css');</style>
 <style type="text/css"> @import url('/style/ext_style/popbox.css');</style>
 
@@ -67,13 +68,13 @@
 	  		  	  
 	  
       <meta property="og:type" content='place' />
-      <meta property="og:url" content='http://www.recreation.gov/reservationDetails.do?contractCode=NRSO&parkId=70928' />	
-      <meta property="og:title" content='Site 005, Loop LP at LOWER PINES, CA' />	
-      <meta property="og:image" content='http://www.recreation.gov/webphotos/NRSO/pid70928/0/540x360.jpg' />
-      <meta property="og:description" content='Lower Pines Campground is located in breathtaking Yosemite National Park in Central California&#39;s rugged Sierra Nevada Mountain Range at an elevation of 4,000 feet.   The site is situated in the heart of Yosemite Valley, an awe-inspiring landscape containing many of the famous features for which Yosemite National Park is known.' />
+      <meta property="og:url" content='http://www.recreation.gov/reservationDetails.do?contractCode=NRSO&parkId=70925' />
+      <meta property="og:title" content='Site 001, Loop UPPER PINES  at UPPER PINES, CA' />
+      <meta property="og:image" content='http://www.recreation.gov/webphotos/NRSO/pid70925/0/540x360.jpg' />
+      <meta property="og:description" content='Upper Pines Campground is located in breathtaking Yosemite National Park in Central California&#39;s rugged Sierra Nevada Mountain Range at an elevation of 4,000 feet. The site is situated in the heart of Yosemite Valley, an awe-inspiring landscape containing many of the famous features for which Yosemite National Park is known.' />
       <meta property="og:site_name" content='Recreation.gov' />
-      <meta property="place:location:latitude"  content='37.7408333' /> 
-      <meta property="place:location:longitude" content='-119.5666667' />
+      <meta property="place:location:latitude"  content='37.7361111' />
+      <meta property="place:location:longitude" content='-119.5625' />
 	  
   </head>
 
@@ -100,7 +101,8 @@
   <script type="text/javascript">submitted = 0;</script>
   
 
-   <div id="pageContainer">
+  
+  <div id="pageContainer">
 	<div id="page">
 	  <script type="text/javascript" src="/foresee/foresee-alive.js"></script>
 
@@ -127,11 +129,10 @@
     vertical-align: top;
 }
 </style>
-<a href="/marketing.do?goto=acm/faqs/Your_Federal_Lands_Open_for_Visitation.htm" title="Reservation Refund Questions">
-<div style="color: #FEB305">Reservation</div>
-<div>Refund</div>
-<div>Questions...</div>
-</a>
+<a href="/marketing.do?goto=acm/Explore_Go_Lists/letsgocamping.htm" title="Let's Do Camping...">
+<div>Let's Go</div>
+<div style="color: #FEB305">Camping...</div>
+</a> 
 </div>
 <!--End Temp Announcment-->
 <div id="banner" style="padding:0; margin:0;height : 60px;overflow:hidden;" class='hidden-phone'>
@@ -143,9 +144,10 @@
 		<iframe id="fbheaderiframe" src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FRecreationgov%2F132630653420787&amp;send=false&amp;layout=button_count&amp;width=110&amp;show_faces=false&amp;action=like&amp;colorscheme=dark&amp;font=arial&amp;height=21&amp;appId=101538589962516" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:80px; height:30px; margin: 10px 0px 0px 10px;" allowTransparency="true"></iframe>		
 		<div id="socialBannerYt"><a href="http://www.youtube.com/Recreationdotgov" target="_blank"><img id="headerYouTube" src="/images/YouTube.png"  width="30" height="30" alt="Recreation.gov - YouTube" title="Recreation.gov - YouTube"></a></div>
 		<div id="socialBannerFb"><a href="http://www.facebook.com/pages/Recreationgov/132630653420787" target="_blank"><img id="headerFacebook" src="/images/Facebook_header.png"  width="30" height="30" alt="Recreation.gov - Facebook" title="Recreation.gov - Facebook"></a></div>
+		<div id="socialBannerIn"><a href="http://instagram.com/recreation_gov# " target="_blank"><img id="headerInstagram" src="/images/Instagram_header.png"  width="30" height="30" alt="Recreation.gov - Instagram" title="Recreation.gov - Instagram"></a></div>
 	</div>
 	<div id="contactUs">
-		Toll-free reservation line: 1-877-444-6777 (10:00 AM - Midnight EST) <a href="/contact.do">Other ways to contact us</a>
+		Need to Contact Us?<a href="/contact.do">Click Here!</a>
 	</div>	
 </div>
 
@@ -216,6 +218,13 @@ $j(document).ready(function(){
 						// open exit message
 						$j("#exit_disclaimer_content").html("<table cellpadding='20'><tr><td valign='middle'><h2>You are exiting the Recreation.gov website</h2><h3>Thank you for visiting our site.</h3><p>You will now be redirected to:<br /><a class='link_truncated' id='exitBox-destHref' href='" + destURL + "' >" + destURL + "</a></p><p>We hope your visit was informative and enjoyable.</p></td></tr></table>");
 						$j("#exit_disclaimer_opener").trigger('click');
+						w = jq(window).width();
+						if( w < 500 ){
+							$j("#modalPopLite-wrapper1").css("width", "80%")
+							$j("#modalPopLite-wrapper1").css("left", "10%")
+							$j("#exitBox-destHref").css( "width", "70%")
+						}
+						
 						// pause and redirect
 						exitMsgTimeout = window.setTimeout(function() {
 							window.location = destURL;
@@ -274,8 +283,9 @@ function removeExitMsg(){
 
 <div class='cartStatus'>
 <div id='shoppingcart'>
-<span id='cartLink'><a href='/viewShoppingCart.do'    >Items In Cart: 1</a></span>
-<span id='checkoutLink'><a href='/viewShoppingCart.do'    >Check Out Now</a></span></div></div>
+<div class='shop_cart_links'><a href='/viewShoppingCart.do'  id='cartLink'   >Items In Cart: 1</a>
+<span id='checkoutLink'><a href='/viewShoppingCart.do'    >Check Out Now</a></span></div></div></div>
+
 
 
 
@@ -297,6 +307,7 @@ function removeExitMsg(){
 <span class='checkout_flow_item_text'>Checkout</span></div>
 <div id='checkout_flow_item_el5' class='checkout_flow_item el5'>
 <span class='checkout_flow_item_text'>Confirmation</span></div></div>
+
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%" style="border-collapse: collapse" class='layout'>
    <tr>
@@ -345,15 +356,15 @@ function removeExitMsg(){
 <input type='hidden' value='220' name='smallMapWidth' id='smallMapWidth'/>
 <input type='hidden' value='220' name='smallMapHeight' id='smallMapHeight'/>
 <input type='hidden' value='NRSO' name='olContractCode' id='olContractCode'/>
-<input type='hidden' value='1.5' name='iconScale' id='iconScale'/>
-<input type='hidden' value='203312' name='selectedSiteRb' id='selectedSiteRb'/>
-<input type='hidden' value='/camping/map_of_Lower_Pines/r/campgroundMap.do?contractCode=NRSO&amp;parkId=70928&amp;selectedSiteRb=203312' name='urlToCgMap' id='urlToCgMap'/>
-<input type='hidden' value='/nrso/ca/cg62/CG62.png' name='basicMapUrl' id='basicMapUrl'/>
-<input type='hidden' value='70928' name='slMapParkId' id='slMapParkId'/><h2>Find your site</h2>
+<input type='hidden' value='0.6' name='iconScale' id='iconScale'/>
+<input type='hidden' value='203262' name='selectedSiteRb' id='selectedSiteRb'/>
+<input type='hidden' value='/camping/map_of_Upper_Pines/r/campgroundMap.do?contractCode=NRSO&amp;parkId=70925&amp;selectedSiteRb=203262' name='urlToCgMap' id='urlToCgMap'/>
+<input type='hidden' value='/nrso/ca/cg65/CG65.png' name='basicMapUrl' id='basicMapUrl'/>
+<input type='hidden' value='70925' name='slMapParkId' id='slMapParkId'/><h2>Find your site</h2>
 <div id='sidemap' onclick='document.location=document.getElementById("urlToCgMap").value;'></div></div></br>
 
 <div id='samplpics'>
-<img src='/webphotos/NRSO/pid70928/sid203312/0/180x120.jpg'  id='p0NRSO@70928' width='180' height='120' alt='Photo: 005, LP' title='Photo: 005, LP' class='PopBoxImageSmall' onclick='PopPhoto(this,50,"PopBoxImageLarge");' pbsrc='/webphotos/NRSO/pid70928/sid203312/0/540x360.jpg'></div></br></div>
+<img src='/webphotos/NRSO/pid70925/sid203262/0/180x120.jpg'  id='p0NRSO@70925' width='180' height='120' alt='Photo: 001, UPPER PINES' title='Photo: 001, UPPER PINES' class='PopBoxImageSmall' onclick='PopPhoto(this,50,"PopBoxImageLarge");' pbsrc='/webphotos/NRSO/pid70925/sid203262/0/540x360.jpg'></div></br></div>
   		
   		
    		    <div>
@@ -386,31 +397,31 @@ function removeExitMsg(){
 <form name='orderDetailsCampForm' method='POST' action='/updateShoppingCartItem.do'  class='mainform' id='reservedetail' onSubmit='showProgressBar("progresspopup","Updating reservation details...",null,"continuebutton");return (submitted-- == 0);'>
 <input type='hidden' value='1' name='cartItemId' id='currentItemId'/>
 <input type='hidden' value='NRSO' name='contractCode' id='contractCode'/>
-<div class='component'>
+<div class='component orddetails'>
 <div >
 <input type='hidden' value='true' name='firstViewFlag' id='firstViewFlag'/></div>
-<div id='pagetitle'><h1>Order Details</h1></div>
+<div id='pagetitle'><h1 >Order Details</h1></div>
 <div id='campnamearea'>
 <div id='campname'>
-<div id='otherlinks'><a href='/makeMoreResv.do' class='reservemore'  id='reservemore'   >Make More Reservations</a><a href='/removeItemFromShoppingCart.do?checkedShoppingCartItems=1&amp;tkn=21140026-9C19-43B2-AF68-E64C47EDAA37' class='remove'  id='removethis'   >Remove This Reservation</a>
-<div class='standout-button'><a href='/camping/Lower_Pines/r/campsiteDetails.do?contractCode=NRSO&amp;parkId=70928&amp;siteId=203312&amp;currentItemId=1' class='remove'  id='changedates'   >Change Dates</a></div></div>
+<div id='otherlinks'><a href='/makeMoreResv.do' class='reservemore'  id='reservemore'   >Make More Reservations</a><a href='/removeItemFromShoppingCart.do?checkedShoppingCartItems=1&amp;tkn=43F40911-8408-4E1F-8520-DFE64AF721B2' class='remove'  id='removethis'   >Remove This Reservation</a>
+<div class='standout-button'><a href='/camping/Upper_Pines/r/campsiteDetails.do?contractCode=NRSO&amp;parkId=70925&amp;siteId=203262&amp;currentItemId=1' class='remove'  id='changedates'   >Change Dates</a></div></div>
 <table class='parkNameAndState' border='0' cellpadding='0' cellspacing='0'>
 <tbody>
 <tr>
 <td class='label' >
-<div id='formfieldleft' class='label'><h2>Park:&nbsp;</h2></div></td>
+<div id='formfieldleft' class='label'><h2 >Park:&nbsp;</h2></div></td>
 <td >
-<div id='formfieldleft'><h2>LOWER PINES, Yosemite National Park, CA</h2></div></td></tr>
+<div id='formfieldleft'><h2 >UPPER PINES, Yosemite National Park, CA</h2></div></td></tr>
 <tr>
 <td class='label' >
-<div id='formfieldleft' class='label'><h2>Site, Loop:&nbsp;</h2></div></td>
+<div id='formfieldleft' class='label'><h2 >Site, Loop:&nbsp;</h2></div></td>
 <td >
-<div id='formfieldleft'><h2>005, LP</h2></div></td></tr>
+<div id='formfieldleft'><h2 >001, UPPER PINES</h2></div></td></tr>
 <tr>
 <td class='label' >
-<div id='formfieldleft' class='label'><h2>Type:&nbsp;</h2></div></td>
+<div id='formfieldleft' class='label'><h2 >Type:&nbsp;</h2></div></td>
 <td >
-<div id='formfieldleft'><h2>STANDARD NONELECTRIC</h2></div></td></tr></tbody></table><br>Arrival:&nbsp;Sun Oct 12 2014&nbsp;&nbsp;&nbsp;Departure:&nbsp;Wed Oct 15 2014<br>Length of stay:&nbsp;3&nbsp;(nights)</div></div><script> var maxLengthEquipmentMap = { "108068":"24","108067":"12","108661":"24","108660":"24","108061":"12","108063":"24","108060":"24","108062":"12" }; </script>
+<div id='formfieldleft'><h2 >STANDARD NONELECTRIC</h2></div></td></tr></tbody></table><br>Arrival:&nbsp;Wed Nov 12 2014&nbsp;&nbsp;&nbsp;Departure:&nbsp;Thu Nov 13 2014<br>Length of stay:&nbsp;1&nbsp;(nights)</div></div><script> var maxLengthEquipmentMap = { "108068":"24","108067":"12","108661":"24","108660":"24","108061":"12","108063":"24","108060":"24","108062":"12" }; </script>
 <div class='content shop'>
 <div class='contenthdr'><h3>Equipment</h3></div>
 <table id='equipment' class='formpage' border='0' cellpadding='0' cellspacing='0'>
@@ -454,7 +465,7 @@ function removeExitMsg(){
 <tr>
 <td class='r' ><span  class='radgrplabel'>Primary Occupant</span>&nbsp;</td>
 <td >
-<span class='occupant'><input type='radio' name='primaryOccupant' value='Member' checked onclick='showHiddenOptionsByList(this, "Member", "Other")'  id='primaryOccupant_Member' title='' class='radio'/><label for='primaryOccupant_Member' >Jesse Holl </label></span>
+<span class='occupant'><input type='radio' name='primaryOccupant' value='Member' checked onclick='showHiddenOptionsByList(this, "Member", "Other")'  id='primaryOccupant_Member' title='' class='radio'/><label for='primaryOccupant_Member' >Jesse Hull </label></span>
 <span class='occupant'><input type='radio' name='primaryOccupant' value='Other'  onclick='showHiddenOptionsByList(this, "Other", "Other")'  id='primaryOccupant_Other' title='' class='radio'/><label for='primaryOccupant_Other' >Other </label></span></td></tr></tbody>
 <tbody class='option'>
 <tr>
@@ -477,7 +488,7 @@ function removeExitMsg(){
 <label for='city' class='extra'><span  class='extra'>City</span></label><br>
 <input type='text' value=''  name='city' id='city' class='m'/></div>
 <div class='left'>
-<label for='stateProvince' class='extra'><span  class='extra'>State/Province</span></label><br><select name='stateProvince' id='stateProvince'   class='m'  ><option selected='selected' value=''></option><option  value='AL'>Alabama</option><option  value='AK'>Alaska</option><option  value='AS'>American Samoa</option><option  value='AZ'>Arizona</option><option  value='AR'>Arkansas</option><option  value='AE'>Armed Forced Other</option><option  value='AA'>Armed Forces Americas</option><option  value='AP'>Armed Forces Pacific</option><option  value='CA'>California</option><option  value='CO'>Colorado</option><option  value='CT'>Connecticut</option><option  value='DE'>Delaware</option><option  value='DC'>District Of Columbia</option><option  value='FM'>Federated States Of Micronesia</option><option  value='FL'>Florida</option><option  value='GA'>Georgia</option><option  value='GU'>Guam</option><option  value='HI'>Hawaii</option><option  value='ID'>Idaho</option><option  value='IL'>Illinois</option><option  value='IN'>Indiana</option><option  value='IA'>Iowa</option><option  value='KS'>Kansas</option><option  value='KY'>Kentucky</option><option  value='LT'>Load Test</option><option  value='LA'>Louisiana</option><option  value='ME'>Maine</option><option  value='MH'>Marshall Islands</option><option  value='MD'>Maryland</option><option  value='MA'>Massachusetts</option><option  value='MI'>Michigan</option><option  value='MN'>Minnesota</option><option  value='MS'>Mississippi</option><option  value='MO'>Missouri</option><option  value='MT'>Montana</option><option  value='NE'>Nebraska</option><option  value='NV'>Nevada</option><option  value='NH'>New Hampshire</option><option  value='NJ'>New Jersey</option><option  value='NM'>New Mexico</option><option  value='NY'>New York</option><option  value='NC'>North Carolina</option><option  value='ND'>North Dakota</option><option  value='MP'>Northern Mariana Islands</option><option  value='OH'>Ohio</option><option  value='OK'>Oklahoma</option><option  value='OR'>Oregon</option><option  value='PW'>Palau</option><option  value='PA'>Pennsylvania</option><option  value='PR'>Puerto Rico</option><option  value='RI'>Rhode Island</option><option  value='SC'>South Carolina</option><option  value='SD'>South Dakota</option><option  value='TN'>Tennessee</option><option  value='TX'>Texas</option><option  value='UM'>U.S. Minor Outlying Islands</option><option  value='UT'>Utah</option><option  value='VT'>Vermont</option><option  value='VI'>Virgin Islands</option><option  value='VA'>Virginia</option><option  value='WA'>Washington</option><option  value='WV'>West Virginia</option><option  value='WI'>Wisconsin</option><option  value='WY'>Wyoming</option><option  value='AB'>Alberta</option><option  value='BC'>British Columbia</option><option  value='MB'>Manitoba</option><option  value='NB'>New Brunswick</option><option  value='NL'>Newfoundland and Labrador</option><option  value='NT'>Northwest Territories</option><option  value='NS'>Nova Scotia</option><option  value='NU'>Nunavut</option><option  value='ON'>Ontario</option><option  value='PE'>Prince Edward Island</option><option  value='QC'>Quebec</option><option  value='SK'>Saskatchewan</option><option  value='YT'>Yukon</option></select></div>
+<label for='stateProvince' class='extra'><span  class='extra'>State/Province</span></label><br><select name='stateProvince' id='stateProvince'   class='m'  ><option selected='selected' value=''></option><option  value='AL'>Alabama</option><option  value='AK'>Alaska</option><option  value='AS'>American Samoa</option><option  value='AZ'>Arizona</option><option  value='AR'>Arkansas</option><option  value='AE'>Armed Forced Other</option><option  value='AA'>Armed Forces Americas</option><option  value='AP'>Armed Forces Pacific</option><option  value='CA'>California</option><option  value='CO'>Colorado</option><option  value='CT'>Connecticut</option><option  value='DE'>Delaware</option><option  value='DC'>District Of Columbia</option><option  value='FM'>Federated States Of Micronesia</option><option  value='FL'>Florida</option><option  value='GA'>Georgia</option><option  value='GU'>Guam</option><option  value='HI'>Hawaii</option><option  value='ID'>Idaho</option><option  value='IL'>Illinois</option><option  value='IN'>Indiana</option><option  value='IA'>Iowa</option><option  value='KS'>Kansas</option><option  value='KY'>Kentucky</option><option  value='LA'>Louisiana</option><option  value='ME'>Maine</option><option  value='MH'>Marshall Islands</option><option  value='MD'>Maryland</option><option  value='MA'>Massachusetts</option><option  value='MI'>Michigan</option><option  value='MN'>Minnesota</option><option  value='MS'>Mississippi</option><option  value='MO'>Missouri</option><option  value='MT'>Montana</option><option  value='NE'>Nebraska</option><option  value='NV'>Nevada</option><option  value='NH'>New Hampshire</option><option  value='NJ'>New Jersey</option><option  value='NM'>New Mexico</option><option  value='NY'>New York</option><option  value='NC'>North Carolina</option><option  value='ND'>North Dakota</option><option  value='MP'>Northern Mariana Islands</option><option  value='OH'>Ohio</option><option  value='OK'>Oklahoma</option><option  value='OR'>Oregon</option><option  value='PW'>Palau</option><option  value='PA'>Pennsylvania</option><option  value='PR'>Puerto Rico</option><option  value='RI'>Rhode Island</option><option  value='SC'>South Carolina</option><option  value='SD'>South Dakota</option><option  value='TN'>Tennessee</option><option  value='TX'>Texas</option><option  value='UM'>U.S. Minor Outlying Islands</option><option  value='UT'>Utah</option><option  value='VT'>Vermont</option><option  value='VI'>Virgin Islands</option><option  value='VA'>Virginia</option><option  value='WA'>Washington</option><option  value='WV'>West Virginia</option><option  value='WI'>Wisconsin</option><option  value='WY'>Wyoming</option><option  value='AB'>Alberta</option><option  value='BC'>British Columbia</option><option  value='MB'>Manitoba</option><option  value='NB'>New Brunswick</option><option  value='NL'>Newfoundland and Labrador</option><option  value='NT'>Northwest Territories</option><option  value='NS'>Nova Scotia</option><option  value='NU'>Nunavut</option><option  value='ON'>Ontario</option><option  value='PE'>Prince Edward Island</option><option  value='QC'>Quebec</option><option  value='SK'>Saskatchewan</option><option  value='YT'>Yukon</option></select></div>
 <div class='left'>
 <label for='zip' class='extra'><span  class='extra'>Zip/Postal code</span></label><br>
 <input type='text' value=''  name='zipCode' id='zip' class='s'/></div>
@@ -506,8 +517,8 @@ function removeExitMsg(){
 <tbody>
 <tr>
 <td >
-<div class='passextrainfo'>
-<label for='cpassnum_701' class='extra'><span  class='extra'>Pass Number</span></label><span  class='requiredMarker'>*</span>
+<div class='passextrainfo'><span  class='requiredMarker'>*</span>
+<label for='cpassnum_701' class='extra'><span  class='extra'>Pass Number</span></label>
 <input type='text' value=''  maxlength='20' name='cpassnum_701' id='cpassnum_701' autocomplete='off'/></div></td></tr>
 <tr>
 <td >
@@ -524,8 +535,8 @@ function removeExitMsg(){
 <tbody>
 <tr>
 <td >
-<div class='passextrainfo'>
-<label for='cpassnum_702' class='extra'><span  class='extra'>Pass Number</span></label><span  class='requiredMarker'>*</span>
+<div class='passextrainfo'><span  class='requiredMarker'>*</span>
+<label for='cpassnum_702' class='extra'><span  class='extra'>Pass Number</span></label>
 <input type='text' value=''  maxlength='20' name='cpassnum_702' id='cpassnum_702' autocomplete='off'/></div></td></tr>
 <tr>
 <td >
@@ -693,7 +704,7 @@ jQuery(function() {
 			</td>
 			<td>
 			<div id="passdesc">
-				From the Angeles National Forest to the Okefenokee National Wildlife Refuge to Zion National Park an Annual Pass provides access to over 2,000 federal recreational sites.  Whether you enjoy mountain biking, bird watching, hiking or any of the thousands of other recreation opportunities available on the nation's public lands, a pass provides a convenient and inexpensive option for visitors to get out and explore America. The Annual Pass does not provide discounts on camping or other fees.
+				From the Angeles National Forest to the Okefenokee National Wildlife Refuge to Zion National Park an Annual Pass provides access to over 2,000 federal recreational sites.  Whether you enjoy mountain biking, bird watching, hiking or any of the thousands of other recreation opportunities available on the nation's public lands, a pass provides a convenient and inexpensive option for visitors to get out and explore America. The Annual Pass does not provide discounts on camping or other fees. U.S. Army Corps of Engineers does not accept the Annual Pass for Day Use fees, but Military Passes do allow free access to these areas.
                 <br><br>
                 <b><u>Price:</u> $80.00</b><br><br>
 			</div>
@@ -745,7 +756,8 @@ jQuery(function() {
 </div></div>
 <div class='content shop'>
 <div class='contenthdrwide'><h3 class='important'>Know Before You Go</h3></div>
-<div class='contentin'><h3>Park</h3><p><ul>
+<div class='contentin'><h3>Park</h3><p ><ul>
+
 <li>If arriving one or more days late, call (209)372-8502; your reservation will be forfeited if we do not hear from you within 24 hours of your arrival date</li><br />
 
 <li>Bear habitat!
@@ -757,7 +769,7 @@ jQuery(function() {
 
 </li><li>There are no electric, water or sewer hook-ups available at individual campsites, although a free dump station is located on-site</li><br />
 
-<li>You are responsible for reading the site alerts and booking a site that will accommodate your equipment.</li><br />
+<li>You are responsible for reading the site alerts and booking a site that will accommodate your equipment</li><br />
 
 <li>Road conditions can change at any time; before arrival, please call (209)372-0200 for road and weather conditions inside Yosemite, and 1-800-427-ROAD for conditions outside the park</li><br />
 
@@ -766,12 +778,7 @@ jQuery(function() {
 <li>Resale or auction of advance reservations is prohibited</li><br />
 
 <li>For additional park information, call (209)372-0200 or visit www.nps.gov/yose</li>
-
-</ul>
-</p><h3>Site</h3><p>**The maximum allowable trailer length is always shorter than the allowable RV length (due to maneuverability).  You are responsible for reading the site alerts and booking a site that will accommodate your equipment.  <font color="red">If you arrive to the campground with different equipment than what you booked for, you will likely not fit, and will be turned away.**</font> </p><p><font color = "red">**The Primary Occupant of the site will be required to show photo ID upon check-in at the campground.**</font>
-
-</p><p><font color="red">**Resale or Auction of Advance Reservations is Prohibited.  Advance reservations made through the national reservation service may not be advertised or otherwise offered for resale or auction.**<BR>**ANY RESALE OR AUCTION OF CAMPGROUND PERMITS WILL MAKE THE PERMIT/CONTRACT NULL AND VOID**</font></p><p>**There is a 7 day camping limit in Yosemite Valley from May 1-September 15.</p><p><b><u>**The maximum allowable length for a trailer in this site is 12 feet.**</b></u></p><p>This site is held for campers with disabilities.</p><p>This site is held for campers with disabilities.
-</p></div></div>
+</ul></p><h3>Site</h3><p >**The maximum allowable trailer length is always shorter than the allowable RV length (due to maneuverability).  You are responsible for reading the site alerts and booking a site that will accomodate your equipment.  <font color = "red">If you arrive to the campground with different equipment than what you booked for, you will likely not fit, and will be turned away.**</font></p><p ><font color = "red">The Primary Occupant of the site will be required to show photo ID upon check-in at the campground.</font></p><p ><font color="red">**Resale or Auction of Advance Reservations is Prohibited.  Advance reservations made through the national reservation service may not be advertised or otherwise offered for resale or auction.**<br>**ANY RESALE OR AUCTION OF CAMPGROUND PERMITS WILL MAKE THE PERMIT/CONTRACT NULL AND VOID**</font></p><p >**There is a 7 day camping limit in Yosemite Valley from May 1-September 14.**</p><p ><b><u>The maximum trailer length allowed in this site is 12 feet.</u></b></p></div></div>
 <div class='content first'><div  class='acknowledgement' ><input type='checkbox' name='agreementAccepted' id='agreement' value='true'     class='chbox'><label for='agreement'><b>Yes,</b> I have read and understood this important information.</label></div></div>
 <div id='continuebutton' class='content btn'>
 <button id='continueshop' class='all continueshop' type='submit'>
@@ -1050,11 +1057,11 @@ s_tan.prop3="recreation";
 s_tan.prop7="activeoutdoor";
 s_tan.hier1="recreation";
 s_tan.events="scAdd,event16";
-s_tan.products="NRSO-Pur-203312";
+s_tan.products="NRSO-Pur-203262";
 s_tan.prop10="logged in";
 s_tan.prop23="11444020";
 s_tan.state="CA";
-s_tan.zip="94122";
+s_tan.zip="94114";
 s_tan.prop30="ORMS";
 evar30="ORMS";
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
@@ -1074,15 +1081,15 @@ var s_code=s_tan.t();if(s_code)document.write(s_code)//--></script>
   		fullTitle = window.location.href;
   		shortTitle = fullTitle.substring(fullTitle.indexOf("?")+1,fullTitle.length);
   	}
-  	
-  	pageTracker._setCustomVar(1,'customerid','11444020',3);
-  	pageTracker._setCustomVar(2,'contract','NRSO',3);
+  	if (pageTracker) {
+  		pageTracker._setCustomVar(1,'customerid','11444020',3);
+  		pageTracker._setCustomVar(2,'contract','NRSO',3);
+  		pageTracker._trackEvent('ShoppingCart','Add','STANDARD NONELECTRIC',1,true);
 
-  	pageTracker._trackEvent('ShoppingCart','Add','STANDARD NONELECTRIC',1,true);
 
+			pageTracker._trackPageview(shortTitle.length==0 ? document.title : shortTitle);
+  	}
 
-		pageTracker._trackPageview(shortTitle.length==0 ? document.title : shortTitle);
-	
   </script>
   
   <!-- for test only -->
