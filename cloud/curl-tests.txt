@@ -38,31 +38,6 @@ curl -X POST \
   https://api.parse.com/1/jobs/newLoginAndDetails
 
 
-ParkIds
-70972 - Kirby Cove
-everyday at 7am PST open for 3 months in advance. 
-
-70925 - Upper Pines Yosemite Wed Mar 19 2014	Sun Nov 30 2014 {"open":{"month":3, "day":19}, "close":{"month":11, "day":30}}
-70926 - Tuolomne {"open":{"month":6, "day":8}, "close":{"month":9, "day":27}}
-70927 - North Pines Yosemite {"open":{"month":4, "day":2}, "close":{"month":11, "day":2}}
-70928 - Lower Pines Yosemite {"open":{"month":3, "day":26}, "close":{"month":10, "day":26}}
-Reservations must be made 1 Days(s) ahead of arrival and can be made up to 5 Month(s) in advance.
-New dates are released in blocks, 1 Month(s) at a time.
-The next on-sale is Sun Jun 15 2014 7am PST for Oct 15-Nov 14
-
-lookingFor
-<blank> - all
-2001 - RV sites
-2002- Trailer sites
-2003 - Tent
-3100 - Tent-only sites
-10001- Cabins
-3101 - Lookouts
-9002- Group sites
-9001- Day use &amp; Picnic areas
-3001- Horse sites
-2004 - Boat sites
-3102 - Yurts
 
 curl -X POST \
   -H "X-Parse-Application-Id: WTgKoETfuN6XnWUaZjVFADDK7DwPtmxXa4VIpMCP" \

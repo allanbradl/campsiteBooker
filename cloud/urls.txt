@@ -18,7 +18,7 @@ curl -D header.txt \
 #load twice
 # parkId is the campsite should hard code a couple.
 curl -D header-search.txt \
-	-H "Cookie: JSESSIONID=B1DD4F3D6E4938C00F59A821ACBD398F.web06-ny" \
+	-H "Cookie: JSESSIONID=1465FDA3CEDE99D99779F39258EF886F.web10-ny" \
 	-d 'page=calendar' \
 	-d 'contractCode=NRSO' \
 	-d 'siteTypeFilter=ALL' \
@@ -31,7 +31,7 @@ curl -D header-search.txt \
 	 http://www.recreation.gov/campsiteCalendar.do > calendar-bad.html
 
 curl  -D header-search2.txt \
-	-H "Cookie: JSESSIONID=B1DD4F3D6E4938C00F59A821ACBD398F.web06-ny" \
+	-H "Cookie: JSESSIONID=1465FDA3CEDE99D99779F39258EF886F.web10-ny" \
 	-d 'page=calendar' \
 	-d 'contractCode=NRSO' \
 	-d 'siteTypeFilter=ALL' \
@@ -53,7 +53,7 @@ curl http://www.recreation.gov/campsitePaging.do \
 
 
 curl  -D header-search3.txt \
-	-H "Cookie: JSESSIONID=B1DD4F3D6E4938C00F59A821ACBD398F.web06-ny" \
+	-H "Cookie: JSESSIONID=1465FDA3CEDE99D99779F39258EF886F.web10-ny" \
 	-d 'contractCode=NRSO' \
 	-d 'parkId=70925' \
 	-d 'startIdx=25' \
@@ -62,34 +62,34 @@ curl  -D header-search3.txt \
 
 # get siteId from right spot in table.
 
-curl -H "Cookie: JSESSIONID=B1DD4F3D6E4938C00F59A821ACBD398F.web06-ny" \
+curl -H "Cookie: JSESSIONID=1465FDA3CEDE99D99779F39258EF886F.web10-ny" \
 	-d 'contractCode=NRSO' \
 	-d 'parkId=70925' \
-	-d 'siteId=203312' \
+	-d 'siteId=203262' \
 	 http://www.recreation.gov/camping/Lower_Pines/r/campsiteDetails.do > detail.html
 
 curl -D switchHeader.txt \
--H "Cookie: JSESSIONID=B1DD4F3D6E4938C00F59A821ACBD398F.web06-ny" \
---data "contractCode=NRSO&parkId=70925&siteId=203312&camparea=82267465&selStatus=aaa&matrixHasError=false&dateToday=11%2F12%2F2014&currentMaximumWindow=12&dateMinWindow=05%2F29%2F2014&dateMaxWindow=05%2F28%2F2015&arvdate=10%2F12%2F2014&arrivaldate=Wed+Nov+12+2014&lengthOfStay=1&dateChosen=true" \
+-H "Cookie: JSESSIONID=1465FDA3CEDE99D99779F39258EF886F.web10-ny" \
+--data "contractCode=NRSO&parkId=70925&siteId=203262&camparea=82267465&selStatus=aaa&matrixHasError=false&dateToday=11%2F12%2F2014&currentMaximumWindow=12&dateMinWindow=05%2F29%2F2014&dateMaxWindow=05%2F28%2F2015&arvdate=11%2F12%2F2014&arrivaldate=Wed+Nov+12+2014&lengthOfStay=1&dateChosen=true" \
 http://www.recreation.gov/switchBookingAction.do > switch.html
 
 curl \
--H "Cookie: JSESSIONID=B1DD4F3D6E4938C00F59A821ACBD398F.web06-ny" \
+-H "Cookie: JSESSIONID=1465FDA3CEDE99D99779F39258EF886F.web10-ny" \
 --data "camparea=82267465&currentItemId=1" \
 https://www.recreation.gov/reservationDetails.do > reservationDetails.html
 
 curl \
--H "Cookie: JSESSIONID=B1DD4F3D6E4938C00F59A821ACBD398F.web06-ny" \
+-H "Cookie: JSESSIONID=1465FDA3CEDE99D99779F39258EF886F.web10-ny" \
 -d 'cartItemId=1&contractCode=NRSO&firstViewFlag=true&equipmentType=108060&vehicleLength=&equipmentDepth=&numberOfCampers=6&numberOfVehicles=2&primaryOccupant=Member&firstName=&lastName=&streetAddressLine1=&city=&stateProvince=&zipCode=&country=&phoneNumber=&emailAddress1=&cpassnum_701=&cpassexpdate_701=&cpasshldname_701=&cpassnum_702=&cpassexpdate_702=&cpasshldname_702=&InteragencyAnnualPassStandardDelivery=0&InteragencyAnnualPassStandardDelivery_fixedPrice=Y&agreementAccepted=true' \
 https://www.recreation.gov/updateShoppingCartItem.do > updateShoppingCartItem.html
 
 
 curl \
--H "Cookie: JSESSIONID=B1DD4F3D6E4938C00F59A821ACBD398F.web06-ny" \
+-H "Cookie: JSESSIONID=1465FDA3CEDE99D99779F39258EF886F.web10-ny" \
 https://www.recreation.gov/checkoutShoppingCart.do  > checkoutShoppingCart.html
 
 curl \
--H "Cookie: JSESSIONID=B1DD4F3D6E4938C00F59A821ACBD398F.web06-ny" \
+-H "Cookie: JSESSIONID=1465FDA3CEDE99D99779F39258EF886F.web10-ny" \
 -d 'giftCardNumber=&giftCardSecCode=&giftCardType=&paymentAmountChoice=F&cardType=VISA&swiped=false&swipeData=&cardNumber=1111111111&securityCode=111&expMonth=06&expYear=2016&firstName=Jesse&lastName=Hull&postalCodeNotApplicable=true&postalCodeApplicableFlag=false&postalCode=&postalCodeRequiredCheckbox=false&acknowlegeAccepted=true&voucherNumberHid=&giftCardNumberHid=&redeemContract=&redeemContractIndex=&redeemOperation=' \
 https://www.recreation.gov/processCart.do > processCart.html
 

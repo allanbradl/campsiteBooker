@@ -18,13 +18,13 @@ function StateMachine(user, reserveJob, status) {
 		};
 		args.url = extractedData.url || stateData.url;
 		args.body = this.combine(extractedData.body, stateData.body);
+		args.headers = {};
+		args.headers['User-Agent']='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.94 Safari/537.36';
 		if (this.jsessionid) {
-			args.headers = {
-				'Cookie':'JSESSIONID='+this.jsessionid
-			}
+			args.headers['Cookie']='JSESSIONID='+this.jsessionid;
 		}
 		args.success = this.wrapWithLogger(stateData.success);
-		args.error = this.wrapWithLogger(stateData.error || that.defaultErrorHandler);
+		args.error = this.wrapWithLogger(stateData.error || function(h) { that.defaultErrorHandler(h)} );
 		this.logRequest(args, function() { 
 			if (!extractedData.pauseUntil) {
 				Parse.Cloud.httpRequest(args); 				
@@ -34,6 +34,12 @@ function StateMachine(user, reserveJob, status) {
 				});
 			}
 		});
+	};
+	this.isRecGov = function() {
+		return this.reserveJob.get('recreationGov');
+	};
+	this.getBaseUrl = function() {
+		return this.isRecGov()?'www.recreation.gov':'www.reserveamerica.com';
 	};
 	this.wrapWithLogger = function(handler) {
 		var that = this;
@@ -50,10 +56,10 @@ function StateMachine(user, reserveJob, status) {
 		var ResponseText = Parse.Object.extend("ResponseText");
 		var text = httpResponse.text;
 		// make it more readable.
-		text = replaceAll(text, "url('", "url('http://www.recreation.gov");
-		text = replaceAll(text, 'src="', 'src="http://www.recreation.gov');
-		text = replaceAll(text, "src='", "src='http://www.recreation.gov");
-		(new ResponseText()).save({text:text}, {
+		text = replaceAll(text, "url('", "url('http://"+that.getBaseUrl());
+		text = replaceAll(text, 'src="', 'src="http://'+that.getBaseUrl());
+		text = replaceAll(text, "src='", "src='http://"+that.getBaseUrl());
+		(new ResponseText()).save({text:text.substring(0,120000)}, {
 			success:function(responseText) {
 				state.response.textId = responseText.id;
 				state.response.cookies = httpResponse.cookies;
@@ -158,7 +164,7 @@ function StateMachine(user, reserveJob, status) {
 	this.getLoginStateData = function() {
 		var that = this;
 		return {
-			url:'https://www.recreation.gov/memberSignInSignUp.do',
+			url:'https://'+that.getBaseUrl()+'/memberSignInSignUp.do',
 			body: {
 				AemailGroup_1733152645:that.user.get("accounts")['recreation'].username,
 				ApasswrdGroup_704558654:that.user.get("accounts")['recreation'].password,
@@ -183,11 +189,22 @@ function StateMachine(user, reserveJob, status) {
 			}
 		}
 	};
+	this.getContractCode = function() {
+		if (this.isRecGov()) {
+			return 'NRSO';
+		} else {
+			return 'CA';
+		}
+	}
 	this.getCheckAvailability1StateData = function() {
 		var that = this;
 		var formattedCampingDate = moment(that.reserveJob.get("campingDate")).format('ddd MMM DD YYYY');
+		var url = 'http://'+that.getBaseUrl()+'/campsiteCalendar.do';
+		if (!that.isRecGov()) {
+			url = 'http://'+that.getBaseUrl()+'/camping/r/campgroundDetails.do?contractCode='+that.getContractCode()+'&parkId='+that.reserveJob.get("parkId");
+		}
 		return {
-			url: 'http://www.recreation.gov/campsiteCalendar.do',
+			url: url,
 			body: {
 				page:'calendar',
 				contractCode:'NRSO',
@@ -217,14 +234,14 @@ function StateMachine(user, reserveJob, status) {
 		console.log("searchState = "+JSON.stringify(searchState));
 		var stateData = (searchState.firstPage ? that.getCheckAvailability1StateData() : {});
 		stateData.success = function(httpResponse) {
-			var r=parseCampsiteResults(httpResponse.text);
+			var r=parseCampsiteResults(httpResponse.text, that.reserveJob.get("siteTypeFilter"));
 			if (!r.canBook && r.count.from == 1) {
 				// no bookable site and this is the first page. Error.
 				that.error(r.parseError);
 				return;
 			} else if (!r.canBook) {
 				// no bookable site on this page. so go back.
-				var url = 'http://www.recreation.gov/campsitePaging.do?startIdx='+(r.count.from-26)+'&contractCode=NRSO&parkId='+that.reserveJob.get("parkId");
+				var url = 'http://'+that.getBaseUrl()+'/campsitePaging.do?startIdx='+(r.count.from-26)+'&contractCode=NRSO&parkId='+that.reserveJob.get("parkId");
 				that.processNextState('CheckAvailability2', {
 					url:url,
 					body: {
@@ -237,7 +254,7 @@ function StateMachine(user, reserveJob, status) {
 				return;
 			} else if (r.canBook && r.count.to != r.count.total && searchState.state =='searching') {
 				// there is a bookable site on this page but we want to keep looking on subsequent pages.
-				var url = 'http://www.recreation.gov/campsitePaging.do?startIdx='+r.count.to+'&contractCode=NRSO&parkId='+that.reserveJob.get("parkId");
+				var url = 'http://'+that.getBaseUrl()+'/campsitePaging.do?startIdx='+r.count.to+'&contractCode=NRSO&parkId='+that.reserveJob.get("parkId");
 				that.processNextState('CheckAvailability2', {
 					url:url,
 					body: {
@@ -251,7 +268,7 @@ function StateMachine(user, reserveJob, status) {
 			}
 			// book the site we found on this page.
 			that.processNextState('CampsiteDetail', {
-				url:'http://www.recreation.gov'+r.bookUrl,
+				url:'http://'+that.getBaseUrl()+r.bookUrl,
 				body:r.bookParams
 			});
 		}
@@ -288,7 +305,7 @@ function StateMachine(user, reserveJob, status) {
 	this.getSwitchBookingActionStateData = function() {
 		var that = this;
 	    return {
-			url: 'http://www.recreation.gov/switchBookingAction.do',
+			url: 'http://'+that.getBaseUrl()+'/switchBookingAction.do',
 			success:function(httpResponse) {
 				var text = httpResponse.text;
 				var msg = "HTTP 200";
@@ -332,6 +349,15 @@ function StateMachine(user, reserveJob, status) {
 					// day use sites don't have equiment.
 					params.equipmentType = 0;
 				}
+				if (that.reserveJob.get("siteTypeFilter") == 'GROUP TENT ONLY') {
+					// day use sites don't have equiment.
+					params.numberOfCampers = 20;
+					delete params.numberOfVehicles;
+				}
+				if (that.reserveJob.get("siteTypeFilter") == 'GROUP TENT ONLY AREA NONELECTRIC') {
+					// day use sites don't have equiment.
+					params.numberOfCampers = 20;
+				}
 				var expectedParams = ['cartItemId', 'contractCode'];
 				for (var i = 0; i < expectedParams.length; i++) {
 					var param = expectedParams[i];
@@ -364,10 +390,14 @@ function StateMachine(user, reserveJob, status) {
 	this.getUpdateShoppingCartStateData = function(successData) {
 		var that = this;
 	    return {
-			url: 'https://www.recreation.gov/updateShoppingCartItem.do',
+			url: 'https://'+that.getBaseUrl()+'/updateShoppingCartItem.do',
 			success:function(httpResponse) {
-				if (httpResponse.text.indexOf('Items In Cart: 1')==-1) {
+				if (that.isRecGov() && httpResponse.text.indexOf('Items In Cart: 1')==-1) {
 					that.error('failed to find string "Items In Cart: 1"');						
+					return;			
+				}
+				if (!that.isRecGov() && httpResponse.text.indexOf('Items: 1')==-1) {
+					that.error('failed to find string "Items: 1"');						
 					return;			
 				}
 				that.processNextState('CheckoutShoppingCart');
@@ -378,7 +408,7 @@ function StateMachine(user, reserveJob, status) {
 	this.getCheckoutShoppingCartStateData = function() {
 		var that = this;
 	    return {
-			url: 'https://www.recreation.gov/checkoutShoppingCart.do',
+			url: 'https://'+that.getBaseUrl()+'/checkoutShoppingCart.do',
 			success:function(httpResponse) {
 				var params = {
 				};
@@ -409,7 +439,7 @@ function StateMachine(user, reserveJob, status) {
 	this.getProcessCartStateData = function() {
 		var that = this;
 	    return {
-			url: 'https://www.recreation.gov/processCart.do',
+			url: 'https://'+that.getBaseUrl()+'/processCart.do',
 			body: {
 				cardType:that.user.get("creditCard").cardType,
 				cardNumber:that.user.get("creditCard").cardNumber,
@@ -464,7 +494,7 @@ function pausecomp(ms) {
 	while (new Date() < ms){};
 } 
 
-function parseCampsiteResults(txt) {
+function parseCampsiteResults(txt, siteTypeFilter) {
   var r = {
 	  canBook:false, 
 	  parseError:""
@@ -491,6 +521,7 @@ function parseCampsiteResults(txt) {
   if (from != -1 && to != -1 && total != -1) {
 	  r.count = {from:from, to:to, total:total};
   }
+  console.log(JSON.stringify(r.count));
   var shopBody = shopTable.substring(bodyStart, shopTable.length);
   if (shopBody.indexOf("<tr") == -1) {
 	  r.parseError = "no rows in table body";
@@ -501,7 +532,9 @@ function parseCampsiteResults(txt) {
   var rowParseError = "";
   for (var i = 1 ; i < allRows.length  ; i++ ) {
 	  var rowData = allRows[i];
-	  var rowResults = parseRow(rowData);
+	  console.log("rowData = " + rowData);
+	  var rowResults = parseRow(rowData, siteTypeFilter);
+	  console.log("rowResults = " + JSON.stringify(rowResults));
 	  if (!rowResults.canBook) {
 		  rowParseError = rowResults.parseError;
 	  } else {
@@ -549,7 +582,7 @@ function getSpanData(shopTable, id) {
 	return num;
 }
 
-function parseRow(rowData) {
+function parseRow(rowData, siteTypeFilter) {
     var r = {
   	  canBook:false, 
   	  parseError:""
@@ -564,13 +597,17 @@ function parseRow(rowData) {
   	  r.parseError = "campsite is accessible only: " + rowData;
   	  return r;
     }
-    var accessibleData = columns[3];
-    if (accessibleData.indexOf("RV NONELECTRIC")!=-1) {
+    var siteTypeData = columns[3];
+    if (siteTypeData.indexOf("RV NONELECTRIC")!=-1) {
   	  r.parseError = "campsite is RV NONELECTRIC: " + rowData;
   	  return r;
     }
+	if (siteTypeFilter && siteTypeData.indexOf(siteTypeFilter)==-1) {
+    	r.parseError = "campsite is not '"+siteTypeFilter+"': " + rowData;
+    	return r;		
+	}
     var data = columns[7];
-    if (data.indexOf("See Details")==-1) {
+    if (data.indexOf("class='book now'")==-1) {
   	  r.parseError = "Unable to find avialable campsite on given dates. data does not contain book now: " + data;
   	  return r;
     }

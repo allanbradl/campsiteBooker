@@ -1,0 +1,14 @@
+HTTP/1.1 200 OK
+Server: Apache
+Content-Type: text/html;charset=UTF-8
+Expires: Wed, 03 Sep 2014 02:49:37 GMT
+Cache-Control: max-age=0, no-cache, no-store
+Pragma: no-cache
+Date: Wed, 03 Sep 2014 02:49:37 GMT
+Content-Length: 19931
+Connection: keep-alive
+Set-Cookie: JSESSIONID=7458D38435666FAD2877207424C2A88F.web08-ny; Path=/; Secure
+Set-Cookie: _rauv_=7458D38435666FAD2877207424C2A88F.web08-ny_; Domain=.reserveamerica.com; Expires=Tue, 29-Aug-2034 02:49:37 GMT; Path=/
+Set-Cookie: _rauv_=7458D38435666FAD2877207424C2A88F.web08-ny_; Domain=.reserveamerica.com; Expires=Tue, 29-Aug-2034 02:49:37 GMT; Path=/
+Set-Cookie: NSC_QSPE-VXQ-IUUQT=ffffffff09293c2b45525d5f4f58455e445a4a422141;Version=1;Max-Age=3600;path=/;secure;httponly
+
