@@ -19,6 +19,7 @@ Reservations must be made 2 Days(s) ahead of arrival and can be made up to 7 Mon
 New dates are released in blocks, 1 Month(s) at a time.
 The next on-sale is Wed Oct 01 2014 for Oct 03 2015 - April 31 2015
 on sale Nov 01 2014 for - May 31 2015
+BOOK time is 8am PST not 7am PST (like for other sites)
 
 120029 - donner state park
 Reservations must be made 2 Days(s) ahead of arrival and can be made up to 7 Month(s) in advance.
